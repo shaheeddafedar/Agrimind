@@ -33,9 +33,9 @@ router.post('/profile/update', isAuth, upload.single('profilePhoto'), (req, res)
 
 router.post('/signup', upload.single('profilePhoto'), authController.postSignup);
 
-// router.get('/download-report', isAuth, (req, res) => {
-//     userController.downloadReport(req, res);
-// });
+router.get('/download-report', isAuth, (req, res) => {
+    userController.downloadReport(req, res);
+});
 
 
 router.get('/recommendation/pdf/:id', isAuth, (req, res) => {

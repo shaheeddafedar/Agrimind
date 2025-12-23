@@ -160,7 +160,6 @@ exports.postRecommendation = async (req, res, next) => {
                 
                 console.log(`AI Success! Recommended crop: ${recommendedCrop}`); 
 
-                // --- 2. CALCULATE FINANCIALS (Logic Added Here) ---
                 const cropKey = recommendedCrop.toLowerCase();
                 const finData = CROP_FINANCIALS[cropKey] || CROP_FINANCIALS['default'];
                 
@@ -168,19 +167,12 @@ exports.postRecommendation = async (req, res, next) => {
                 const grossRevenue = finData.revenue;
                 const netProfit = grossRevenue - investment;
 
-                // --- 3. SAVE TO DATABASE ---
                 const newRecommendation = new Recommendation({
-                    // Spread the user inputs (N, P, K, etc.)
                     ...req.body,
                     
-                    // Link to the logged-in User
                     userId: req.session.user._id, 
-                    
-                    // Save the AI Prediction
-                    recommendedCrop: recommendedCrop,
-                    
-                    // Save the Calculated Money Values
-                    investment: investment,
+                                        recommendedCrop: recommendedCrop,
+                                        investment: investment,
                     grossRevenue: grossRevenue,
                     netProfit: netProfit
                 });
@@ -201,7 +193,6 @@ exports.postRecommendation = async (req, res, next) => {
     }
 };
 
-// ... (Keep the rest of your exports: postFeedback, getAnalyticsData, etc.)
 exports.postFeedback = async (req, res, next) => {
     try {
         const { name, comment, rating } = req.body; 
@@ -220,7 +211,6 @@ exports.getFeedback = async (req, res, next) => {
 };
 
 exports.getAnalyticsData = async (req, res, next) => {
-    // 1. Get the year parameter
     const { year } = req.query; 
 
     const allFarmerGrowth = [
@@ -234,14 +224,12 @@ exports.getAnalyticsData = async (req, res, next) => {
         { label: 'May 2025', count: 115, year: '2025' },
     ];
 
-    // 2. LOGIC FIX: If year is missing OR 'all', show everything. 
-    // Otherwise, filter by the specific year.
+    
     const filteredGrowth = (!year || year === 'all')
         ? allFarmerGrowth
         : allFarmerGrowth.filter(item => item.year === year);
 
     const mockData = {
-        // These keys MUST match what analytics.js expects
         mostRecommendedCrops: [
             { _id: 'Wheat', count: 150 }, 
             { _id: 'Rice', count: 120 },

@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- FORM SUBMISSION ---
     if (form) form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = form.querySelector('.btn');
@@ -86,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const feedbackData = {
             name: document.getElementById('name').value,
             rating: parseInt(ratingInput.value),
-            // THE FIX: We are now sending a 'comment' field to the API
             comment: document.getElementById('comment').value,
         };
 
@@ -101,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Thank you for your feedback!');
                 form.reset();
                 stars.forEach(s => { s.textContent = '☆'; });
-                fetchFeedbacks(); // Refresh the list with the new feedback
+                fetchFeedbacks(); 
             } else {
                 alert('Could not submit feedback. Please check all fields.');
             }
@@ -112,6 +110,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- INITIALIZE THE PAGE ---
     fetchFeedbacks();
 });

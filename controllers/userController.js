@@ -39,32 +39,25 @@ exports.postUpdateProfile = async (req, res) => {
     }
 };
 
-// --- THIS IS THE FUNCTION YOU ASKED FOR ---
 exports.downloadSingleReport = async (req, res) => {
     try {
         const recId = req.params.id;
-        
-        // 1. Get Data from DB
-        const rec = await Recommendation.findOne({ _id: recId, userId: req.session.user._id });
+                const rec = await Recommendation.findOne({ _id: recId, userId: req.session.user._id });
         const user = await User.findById(req.session.user._id);
 
         if (!rec) return res.redirect('/profile');
 
-        // 2. Read Financials directly (with fallback to 0 if missing)
         const investment = rec.investment || 0;
         const grossRevenue = rec.grossRevenue || 0;
         const netProfit = rec.netProfit || 0;
 
-        // 3. Generate PDF
         const doc = new PDFDocument({ margin: 50 });
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename=AgriMind_Report_${rec.recommendedCrop}.pdf`);
 
         doc.pipe(res);
 
-        // --- PDF DESIGN ---
         
-        // Header
         doc.rect(0, 0, 612, 110).fill('#2E8B57'); 
         doc.fillColor('white').fontSize(26).text('AgriMind Report', 50, 40);
         doc.fontSize(12).text(`Report ID: ${rec._id.toString().substring(0, 8).toUpperCase()}`, 50, 75);
@@ -72,17 +65,14 @@ exports.downloadSingleReport = async (req, res) => {
 
         doc.moveDown(4);
 
-        // Farmer Details
         doc.fillColor('black').fontSize(16).text(`Farmer: ${user.name}`, 50, 140);
         doc.fontSize(12).fillColor('#555').text(`Location: ${user.location}`);
 
-        // Result Box
         doc.moveDown(2);
         doc.rect(50, 190, 510, 80).fillAndStroke('#f0fff4', '#2E8B57');
         doc.fillColor('#2E8B57').fontSize(12).text('Based on your inputs, the AI recommends:', 70, 210);
         doc.fontSize(24).font('Helvetica-Bold').text(rec.recommendedCrop.toUpperCase(), 70, 235);
 
-        // --- FINANCIALS SECTION ---
         doc.moveDown(4);
         doc.fillColor('black').fontSize(16).font('Helvetica-Bold').text('Estimated Financials (Per Acre)', 50, 310);
         doc.rect(50, 330, 510, 2).fill('#eee');
@@ -95,11 +85,9 @@ exports.downloadSingleReport = async (req, res) => {
         doc.font('Helvetica').fillColor('#555').text('Gross Revenue:', 280, finY);
         doc.font('Helvetica-Bold').fillColor('#2E8B57').text(`Rs. ${grossRevenue.toLocaleString()}`, 400, finY);
 
-        // Net Profit Badge
         doc.rect(50, finY + 30, 510, 40).fill('#e8f5e9'); 
         doc.fillColor('#1b5e20').fontSize(14).text(`NET PROFIT:  Rs. ${netProfit.toLocaleString()}`, 0, finY + 43, { align: 'center', width: 612 });
 
-        // --- INPUTS SECTION (Reading from 'rec' object) ---
         doc.moveDown(4);
         doc.fillColor('black').fontSize(16).text('Your Soil & Weather Inputs', 50, 450);
         doc.rect(50, 470, 510, 2).fill('#2E8B57');
@@ -107,7 +95,6 @@ exports.downloadSingleReport = async (req, res) => {
         const rowY = 490;
         doc.fontSize(12).font('Helvetica');
 
-        // Column 1
         doc.fillColor('#555').text('Nitrogen (N):', 50, rowY);
         doc.fillColor('black').text(rec.nitrogen || 0, 150, rowY);
 
@@ -117,7 +104,6 @@ exports.downloadSingleReport = async (req, res) => {
         doc.fillColor('#555').text('Potassium (K):', 50, rowY + 50);
         doc.fillColor('black').text(rec.potassium || 0, 150, rowY + 50);
 
-        // Column 2
         doc.fillColor('#555').text('Soil pH:', 300, rowY);
         doc.fillColor('black').text(rec.soilPh || 0, 400, rowY);
 
@@ -131,6 +117,50 @@ exports.downloadSingleReport = async (req, res) => {
 
     } catch (err) {
         console.log("PDF Generation Error:", err);
+        res.redirect('/profile');
+    }
+};
+
+
+exports.downloadReport = async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user._id);
+        const recommendations = await Recommendation.find({ userId: req.session.user._id }).sort({ createdAt: -1 });
+
+        const doc = new PDFDocument({ margin: 50 });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=AgriMind_Full_History.pdf');
+
+        doc.pipe(res);
+
+        doc.rect(0, 0, 612, 110).fill('#2E8B57'); 
+        doc.fillColor('white').fontSize(26).text('AgriMind History', 50, 40);
+        doc.fontSize(12).text(`Generated for: ${user.name}`, 50, 75);
+
+        doc.moveDown(5);
+
+        doc.fillColor('black');
+        
+        recommendations.forEach((rec, index) => {
+            if (doc.y > 700) doc.addPage();
+
+            doc.fontSize(14).font('Helvetica-Bold').text(`${index + 1}. ${rec.recommendedCrop.toUpperCase()}`, 50, doc.y);
+            doc.fontSize(10).font('Helvetica').fillColor('#555');
+            doc.text(`Date: ${new Date(rec.createdAt).toLocaleDateString()} | Profit: Rs. ${rec.netProfit ? rec.netProfit.toLocaleString() : 'N/A'}`);
+            
+            doc.text(`Soil: N:${rec.nitrogen} P:${rec.phosphorus} K:${rec.potassium} | pH:${rec.soilPh} | Rain:${rec.rainfall}mm`);
+            
+            doc.moveDown(1);
+            doc.rect(50, doc.y, 510, 1).fill('#eee'); 
+            doc.moveDown(1);
+            doc.fillColor('black');
+        });
+
+        doc.end();
+
+    } catch (err) {
+        console.log(err);
         res.redirect('/profile');
     }
 };

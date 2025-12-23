@@ -1,11 +1,10 @@
 const Recommendation = require('../models/Recommendation');
 const Feedback = require('../models/Feedback');
-const User = require('../models/User'); // Ensure this line is added
-
+const User = require('../models/User'); 
 exports.getHomepage = async (req, res, next) => {
     try {
         const cropsRecommended = await Recommendation.countDocuments();
-        const farmersHelped = await User.countDocuments(); // Ensure this line is changed
+        const farmersHelped = await User.countDocuments();
 
         res.render('index', {
             pageTitle: 'Home',
