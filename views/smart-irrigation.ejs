@@ -2,276 +2,304 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Smart Irrigation - AgriMind</title>
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/smart-irrigation.css">
-
 </head>
 
 <body>
 
-
     <header class="navbar">
-
         <div class="container">
-
             <a href="/" class="logo">
                 <i class="fas fa-leaf"></i> AgriMind
             </a>
 
-            <button class="mobile-menu-toggle"
-                    id="mobile-menu-toggle">
-
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
                 <i class="fas fa-bars"></i>
-
             </button>
 
-
             <ul class="nav-links" id="nav-links">
-    <li><a href="/"><%= __('nav_home') %></a></li>
+                <li><a href="/"><%= __('nav_home') %></a></li>
 
-    <% if (isLoggedIn) { %>
-        <li><a href="/dashboard"><%= __('nav_dashboard') %></a></li>
-        <li><a href="/irrigation" class="active">Irrigation</a></li>
-        <li><a href="/feedback"><%= __('nav_feedback') %></a></li>
-    <% } %>
+                <% if (isLoggedIn) { %>
+                    <li><a href="/dashboard"><%= __('nav_dashboard') %></a></li>
+                    <li><a href="/irrigation" class="active">Irrigation</a></li>
+                    <li><a href="/feedback"><%= __('nav_feedback') %></a></li>
+                <% } %>
 
-    <li><a href="/about"><%= __('nav_about') %></a></li>
-    <li><a href="/analytics"><%= __('nav_analytics') %></a></li>
-</ul>
-
+                <li><a href="/about"><%= __('nav_about') %></a></li>
+                <li><a href="/analytics"><%= __('nav_analytics') %></a></li>
+            </ul>
 
             <!-- Authentication -->
-
             <div class="auth-buttons">
-
                 <% if (isLoggedIn && user) { %>
-
                     <div class="user-nav-profile">
-
                         <img
                             src="<%= user.profilePhoto %>"
                             alt="User"
                             class="nav-avatar"
                         >
-
                         <span class="nav-username">
-
                             <%= user.name %>
-
                             <i class="fas fa-caret-down"></i>
-
                         </span>
 
-
                         <div class="user-dropdown-menu">
-
                             <a href="/profile">
                                 <i class="fas fa-user-circle"></i>
                                 View Profile
                             </a>
-
                             <a href="/dashboard">
                                 <i class="fas fa-seedling"></i>
                                 Dashboard
                             </a>
-
-
-                            <form
-                                action="/logout"
-                                method="POST"
-                                style="margin: 0;"
-                            >
-
-                                <button
-                                    type="submit"
-                                    style="font-family: inherit;"
-                                >
-
+                            <form action="/logout" method="POST" style="margin: 0;">
+                                <button type="submit" style="font-family: inherit;">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Logout
-
                                 </button>
-
                             </form>
-
                         </div>
-
                     </div>
-
                 <% } %>
-
             </div>
-
 
             <!-- Language -->
-
-            <li
-                class="dropdown"
-                style="list-style: none; margin-left: 20px;"
-            >
-
+            <li class="dropdown" style="list-style: none; margin-left: 20px;">
                 <a href="#" class="dropbtn">
-
                     <i class="fas fa-globe"></i>
                     Language
-
                 </a>
-
-
                 <div class="dropdown-content">
-
                     <a href="/lang/en">English</a>
-
-                    <a href="/lang/hi">
-                        हिन्दी (Hindi)
-                    </a>
-
-                    <a href="/lang/kn">
-                        ಕನ್ನಡ (Kannada)
-                    </a>
-
+                    <a href="/lang/hi">हिन्दी (Hindi)</a>
+                    <a href="/lang/kn">ಕನ್ನಡ (Kannada)</a>
                 </div>
-
             </li>
-
         </div>
-
     </header>
 
-
     <!-- ================= MAIN ================= -->
-
-    <main class="page-content">
-
+    <main
+        class="page-content"
+        id="irrigation-page-root"
+        data-user-id="<%= (typeof user !== 'undefined' && user && user._id) ? user._id : (typeof userId !== 'undefined' ? userId : '') %>"
+        data-user-name="<%= (typeof user !== 'undefined' && user && user.name) ? user.name : '' %>"
+        data-user-location="<%= (typeof user !== 'undefined' && user && user.location) ? user.location : '' %>"
+    >
 
         <!-- PAGE HEADER -->
-
         <div class="page-header irrigation-page-header">
-
             <div class="container">
-
                 <h1><i class="fas fa-tint irrigation-title-icon"></i> Smart Irrigation</h1>
-
                 <p>
-                    Monitor soil moisture and determine whether irrigation is required.
+                    Monitor soil moisture, receive threshold alerts, visualize crop water status, and estimate field water requirements.
                 </p>
-
             </div>
-
         </div>
 
-
         <!-- ================= IRRIGATION CONTENT ================= -->
-
         <div class="container irrigation-content">
 
+            <!-- 1. THRESHOLD ALERT & RECOVERY BANNERS -->
+            <div id="low-moisture-alert-banner" class="alert-banner alert-warning-banner" style="display: none;" role="alert">
+                <div class="alert-banner-header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong id="low-moisture-alert-title">Low Soil Moisture Warning</strong>
+                </div>
+                <p id="low-moisture-alert-message"></p>
+                <small id="low-moisture-cooldown-note" class="alert-cooldown-note" style="display: none;">
+                    Duplicate alert suppressed — cooldown active for this ongoing low-moisture condition.
+                </small>
+            </div>
 
-            <!-- INPUT CARD -->
+            <div id="moisture-recovery-banner" class="alert-banner alert-recovery-banner" style="display: none;" role="status">
+                <div class="alert-banner-header">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Soil Moisture Recovered</strong>
+                </div>
+                <p id="moisture-recovery-message"></p>
+            </div>
 
-            <div class="irrigation-card">
-
-                <div class="irrigation-card-header">
-
-                    <i class="fas fa-water"></i>
-
-                    <div>
-
-                        <h2>
-                            Check Irrigation Requirement
-                        </h2>
-
-                        <p>
-                            Enter the crop and current soil moisture level.
-                        </p>
-
+            <!-- 2. SENSOR STATUS & EXISTING FARM CONTEXT CARD -->
+            <div class="irrigation-card sensor-status-card">
+                <div class="sensor-top-bar">
+                    <div class="sensor-indicator-group">
+                        <span id="sensor-status-dot" class="sensor-dot sensor-dot-offline"></span>
+                        <div>
+                            <h3 id="sensor-status-title" class="sensor-status-heading">Checking Sensor Status...</h3>
+                            <p id="sensor-last-updated" class="sensor-timestamp">Connecting to /api/sensor/data...</p>
+                        </div>
                     </div>
 
+                    <div class="sensor-actions-group">
+                        <span id="active-source-pill" class="source-pill">Source: Manual Entry</span>
+                        <button type="button" id="sync-sensor-btn" class="btn btn-outline-sm">
+                            <i class="fas fa-sync-alt"></i> Sync Sensor
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Live NPK & Moisture Strip when available -->
+                <div id="sensor-npk-strip" class="sensor-npk-strip" style="display: none;">
+                    <div class="npk-pill"><strong>Live Moisture:</strong> <span id="sensor-live-moisture">-</span>%</div>
+                    <div class="npk-pill"><strong>Nitrogen (N):</strong> <span id="sensor-live-n">-</span></div>
+                    <div class="npk-pill"><strong>Phosphorus (P):</strong> <span id="sensor-live-p">-</span></div>
+                    <div class="npk-pill"><strong>Potassium (K):</strong> <span id="sensor-live-k">-</span></div>
+                </div>
 
-                <form id="irrigation-form">
+                <!-- Existing Farmer / Consultation Context -->
+                <div id="farm-context-banner" class="farm-context-banner" style="display: none;">
+                    <div class="farm-context-title">
+                        <i class="fas fa-tractor"></i>
+                        <span>Crop &amp; Field Information Available in Your Account</span>
+                    </div>
+                    <div id="farm-context-chips" class="farm-context-chips"></div>
+                </div>
 
-
-                    <!-- CROP -->
-
-                    <div class="form-group">
-
-                        <label for="irrigation-crop">
-                            <i class="fas fa-seedling"></i>
-                            Crop
+                <!-- Offline Fallbacks: Stored Farm ID + Clearly Labeled Simulated Demo Presets -->
+                <div id="sensor-offline-tools" class="sensor-offline-tools">
+                    <div class="offline-tool-col">
+                        <label for="irrigation-farm-id" class="tool-label">
+                            <i class="fas fa-database"></i> Load Stored Farm Record (e.g. FARM101 – FARM808):
                         </label>
-
-                        <select id="irrigation-crop" required>
-    <option value="">Select Crop</option>
-    <option value="apple">Apple</option>
-    <option value="banana">Banana</option>
-    <option value="barley">Barley</option>
-    <option value="blackgram">Blackgram</option>
-    <option value="blackpepper">Black Pepper</option>
-    <option value="brinjal">Brinjal</option>
-    <option value="cabbage">Cabbage</option>
-    <option value="cardamom">Cardamom</option>
-    <option value="cauliflower">Cauliflower</option>
-    <option value="chickpea">Chickpea</option>
-    <option value="coconut">Coconut</option>
-    <option value="coffee">Coffee</option>
-    <option value="coriander">Coriander</option>
-    <option value="cotton">Cotton</option>
-    <option value="garlic">Garlic</option>
-    <option value="grapes">Grapes</option>
-    <option value="horsegram">Horsegram</option>
-    <option value="jute">Jute</option>
-    <option value="kidneybeans">Kidney Beans</option>
-    <option value="lentil">Lentil</option>
-    <option value="maize">Maize</option>
-    <option value="mango">Mango</option>
-    <option value="mothbeans">Moth Beans</option>
-    <option value="mungbean">Mung Bean</option>
-    <option value="muskmelon">Muskmelon</option>
-    <option value="okra">Okra</option>
-    <option value="onion">Onion</option>
-    <option value="orange">Orange</option>
-    <option value="papaya">Papaya</option>
-    <option value="pigeonpeas">Pigeon Peas</option>
-    <option value="pomegranate">Pomegranate</option>
-    <option value="potato">Potato</option>
-    <option value="ragi">Ragi</option>
-    <option value="rapeseed">Rapeseed</option>
-    <option value="rice">Rice</option>
-    <option value="sorghum">Sorghum</option>
-    <option value="soybean">Soybean</option>
-    <option value="sunflower">Sunflower</option>
-    <option value="sweet_potato">Sweet Potato</option>
-    <option value="tomato">Tomato</option>
-    <option value="turmeric">Turmeric</option>
-    <option value="watermelon">Watermelon</option>
-    <option value="wheat">Wheat</option>
-</select>
-
+                        <div class="inline-input-row">
+                            <input type="text" id="irrigation-farm-id" placeholder="e.g. FARM101">
+                            <button type="button" id="load-farm-record-btn" class="btn btn-outline-sm">
+                                Load Farm
+                            </button>
+                        </div>
                     </div>
 
+                    <div class="offline-tool-col">
+                        <span class="tool-label">
+                            <i class="fas fa-flask"></i> Simulated Demo Readings (For Testing When Hardware is Offline):
+                        </span>
+                        <div class="sim-buttons-row">
+                            <button type="button" class="sim-btn sim-btn-dry" data-sim-moisture="22">
+                                Dry Demo (22%)
+                            </button>
+                            <button type="button" class="sim-btn sim-btn-optimal" data-sim-moisture="48">
+                                Optimal Demo (48%)
+                            </button>
+                            <button type="button" class="sim-btn sim-btn-wet" data-sim-moisture="85">
+                                Too Wet Demo (85%)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. INPUT & NOTIFICATION SETTINGS CARD -->
+            <div class="irrigation-card">
+                <div class="irrigation-card-header irrigation-header-with-actions">
+                    <div class="header-left-group">
+                        <i class="fas fa-water"></i>
+                        <div>
+                            <h2>Check Irrigation Requirement</h2>
+                            <p>Select your crop, configure target moisture, and check soil moisture status.</p>
+                        </div>
+                    </div>
+
+                    <button type="button" id="toggle-notif-settings-btn" class="btn btn-outline-sm" title="Notification Preferences">
+                        <i class="fas fa-bell"></i> Alert Settings
+                    </button>
+                </div>
+
+                <!-- Collapsible Notification Preferences Panel -->
+                <div id="notif-settings-panel" class="notif-settings-panel" style="display: none;">
+                    <h4><i class="fas fa-Sliders-h"></i> Moisture Threshold Notification Preferences</h4>
+                    <div class="notif-pref-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="pref-enable-alerts" checked>
+                            <span>Enable Low-Moisture Threshold Alerts</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="pref-enable-browser-notif" checked>
+                            <span>Send Browser Local Notifications (when permitted)</span>
+                        </label>
+                    </div>
+                    <div class="notif-permission-row">
+                        <span id="browser-notif-status" class="notif-status-tag">Browser Notification Permission: Checking...</span>
+                        <button type="button" id="request-notif-permission-btn" class="btn btn-outline-sm" style="display: none;">
+                            Allow Browser Notifications
+                        </button>
+                    </div>
+                    <p class="notif-limitation-note">
+                        <i class="fas fa-info-circle"></i>
+                        Alerts are evaluated automatically when sensor readings are synced or entered while this page is open. Repeat alerts for the same ongoing low-moisture condition are suppressed for 30 minutes and clear automatically upon recovery. Continuous background monitoring when the browser is closed requires a backend push service.
+                    </p>
+                </div>
+
+                <!-- Inline Error Message Box -->
+                <div id="irrigation-error-box" class="irrigation-error-box" style="display: none;" role="alert"></div>
+
+                <form id="irrigation-form" novalidate>
+                    <!-- CROP -->
+                    <div class="form-group">
+                        <label for="irrigation-crop">
+                            <i class="fas fa-seedling"></i> Crop
+                        </label>
+                        <select id="irrigation-crop" required>
+                            <option value="">Select Crop</option>
+                            <option value="apple">Apple</option>
+                            <option value="banana">Banana</option>
+                            <option value="barley">Barley</option>
+                            <option value="blackgram">Blackgram</option>
+                            <option value="blackpepper">Black Pepper</option>
+                            <option value="brinjal">Brinjal</option>
+                            <option value="cabbage">Cabbage</option>
+                            <option value="cardamom">Cardamom</option>
+                            <option value="cauliflower">Cauliflower</option>
+                            <option value="chickpea">Chickpea</option>
+                            <option value="coconut">Coconut</option>
+                            <option value="coffee">Coffee</option>
+                            <option value="coriander">Coriander</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="garlic">Garlic</option>
+                            <option value="grapes">Grapes</option>
+                            <option value="horsegram">Horsegram</option>
+                            <option value="jute">Jute</option>
+                            <option value="kidneybeans">Kidney Beans</option>
+                            <option value="lentil">Lentil</option>
+                            <option value="maize">Maize</option>
+                            <option value="mango">Mango</option>
+                            <option value="mothbeans">Moth Beans</option>
+                            <option value="mungbean">Mung Bean</option>
+                            <option value="muskmelon">Muskmelon</option>
+                            <option value="okra">Okra</option>
+                            <option value="onion">Onion</option>
+                            <option value="orange">Orange</option>
+                            <option value="papaya">Papaya</option>
+                            <option value="pigeonpeas">Pigeon Peas</option>
+                            <option value="pomegranate">Pomegranate</option>
+                            <option value="potato">Potato</option>
+                            <option value="ragi">Ragi</option>
+                            <option value="rapeseed">Rapeseed</option>
+                            <option value="rice">Rice</option>
+                            <option value="sorghum">Sorghum</option>
+                            <option value="soybean">Soybean</option>
+                            <option value="sunflower">Sunflower</option>
+                            <option value="sweet_potato">Sweet Potato</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="turmeric">Turmeric</option>
+                            <option value="watermelon">Watermelon</option>
+                            <option value="wheat">Wheat</option>
+                        </select>
+                    </div>
 
                     <!-- SOIL MOISTURE -->
-
                     <div class="form-group">
-
                         <label for="soil-moisture">
-
-                            <i class="fas fa-tint"></i>
-
-                            Soil Moisture (%)
-
+                            <i class="fas fa-tint"></i> Current Soil Moisture (%)
                         </label>
-
                         <input
                             type="number"
                             id="soil-moisture"
@@ -280,257 +308,517 @@
                             step="0.1"
                             placeholder="e.g. 28"
                         >
-
                     </div>
 
+                    <!-- TARGET MOISTURE -->
+                    <div class="form-group">
+                        <label for="target-moisture">
+                            <i class="fas fa-bullseye"></i> Target Moisture Level (%)
+                        </label>
+                        <input
+                            type="number"
+                            id="target-moisture"
+                            min="10"
+                            max="95"
+                            step="1"
+                            placeholder="Default: 55%"
+                        >
+                    </div>
+
+                    <!-- CONFIGURED THRESHOLD PREVIEW -->
+                    <div class="form-group threshold-info-group">
+                        <label>
+                            <i class="fas fa-flag"></i> Configured Thresholds
+                        </label>
+                        <div class="threshold-preview-box">
+                            <span>Min Required: <strong id="form-min-threshold" class="text-danger">35%</strong></span>
+                            <span>Target: <strong id="form-target-threshold" class="text-success">55%</strong></span>
+                        </div>
+                    </div>
 
                     <button
                         type="submit"
                         class="btn irrigation-check-btn"
                         id="irrigation-check-btn"
                     >
-
                         <i class="fas fa-search"></i>
-
                         Check Irrigation
-
                     </button>
-
-
                 </form>
-
             </div>
 
-
-            <!-- RESULT -->
-
-            <div
-                id="irrigation-result"
-                class="irrigation-card irrigation-result"
-                style="display: none;"
-            >
-
-                <div class="result-status-icon"
-                     id="result-status-icon">
-
-                    <i class="fas fa-tint"></i>
-
+            <!-- 4. SOIL MOISTURE VISUALIZATION & DASHBOARD CARD -->
+            <div class="irrigation-card">
+                <div class="irrigation-card-header">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <div>
+                        <h2>Soil Moisture Dashboard &amp; Visualization</h2>
+                        <p>Interactive circular moisture gauge, water-droplet fill level, and threshold zones.</p>
+                    </div>
                 </div>
 
+                <!-- Simulated Banner inside Visualization when Demo Data is used -->
+                <div id="simulated-data-banner" class="simulated-data-banner" style="display: none;">
+                    <i class="fas fa-flask"></i>
+                    <span><strong>SIMULATED DEMONSTRATION DATA</strong> — Showing sample values for testing. Not a live sensor reading.</span>
+                </div>
 
-                <h2 id="irrigation-status">
-                    Irrigation Status
-                </h2>
+                <div class="visual-dashboard-grid">
+                    <!-- Circular SVG Gauge -->
+                    <div class="gauge-panel">
+                        <div class="circular-gauge-container">
+                            <svg width="200" height="200" viewBox="0 0 200 200" class="moisture-gauge-svg">
+                                <g transform="rotate(-90 100 100)">
+                                    <circle
+                                        cx="100"
+                                        cy="100"
+                                        r="76"
+                                        fill="none"
+                                        stroke="#E2E8F0"
+                                        stroke-width="18"
+                                    ></circle>
+                                    <circle
+                                        id="gauge-progress-circle"
+                                        cx="100"
+                                        cy="100"
+                                        r="76"
+                                        fill="none"
+                                        stroke="#2E8B57"
+                                        stroke-width="18"
+                                        stroke-linecap="round"
+                                        stroke-dasharray="477.52"
+                                        stroke-dashoffset="477.52"
+                                    ></circle>
+                                </g>
+                                <!-- Min Threshold Tick Line on Ring -->
+                                <line id="gauge-min-tick" x1="100" y1="12" x2="100" y2="36" stroke="#DC3545" stroke-width="3.5" stroke-linecap="round"></line>
+                                <!-- Target Threshold Tick Line on Ring -->
+                                <line id="gauge-target-tick" x1="100" y1="12" x2="100" y2="36" stroke="#15803D" stroke-width="3.5" stroke-linecap="round"></line>
+                            </svg>
+                            <div class="gauge-center-label">
+                                <span id="gauge-moisture-value" class="gauge-big-number">--%</span>
+                                <span id="gauge-condition-badge" class="condition-pill condition-unknown">Awaiting Input</span>
+                                <small id="gauge-crop-label" class="gauge-crop-sub">Select a crop</small>
+                            </div>
+                        </div>
+                        <div class="gauge-ring-legend">
+                            <span><i class="fas fa-minus" style="color: #DC3545;"></i> Min Threshold</span>
+                            <span><i class="fas fa-minus" style="color: #15803D;"></i> Target Level</span>
+                        </div>
+                    </div>
 
+                    <!-- Water Droplet Visualization + Key Metric Cards -->
+                    <div class="droplet-and-kpis-panel">
+                        <div class="droplet-visual-card">
+                            <svg width="76" height="96" viewBox="0 0 80 100" class="droplet-svg">
+                                <defs>
+                                    <clipPath id="webDropletClip">
+                                        <path d="M40 6 C40 6 10 46 10 68 C10 85 23.4 96 40 96 C56.6 96 70 85 70 68 C70 46 40 6 40 6 Z"></path>
+                                    </clipPath>
+                                </defs>
+                                <path
+                                    d="M40 6 C40 6 10 46 10 68 C10 85 23.4 96 40 96 C56.6 96 70 85 70 68 C70 46 40 6 40 6 Z"
+                                    fill="#EFF6FF"
+                                ></path>
+                                <rect
+                                    id="droplet-fill-rect"
+                                    x="0"
+                                    y="92"
+                                    width="80"
+                                    height="0"
+                                    fill="#2878ff"
+                                    opacity="0.82"
+                                    clip-path="url(#webDropletClip)"
+                                ></rect>
+                                <line
+                                    id="droplet-target-line"
+                                    x1="10"
+                                    y1="45"
+                                    x2="70"
+                                    y2="45"
+                                    stroke="#15803D"
+                                    stroke-width="2"
+                                    stroke-dasharray="4,3"
+                                    clip-path="url(#webDropletClip)"
+                                ></line>
+                                <path
+                                    d="M40 6 C40 6 10 46 10 68 C10 85 23.4 96 40 96 C56.6 96 70 85 70 68 C70 46 40 6 40 6 Z"
+                                    fill="none"
+                                    stroke="#2878ff"
+                                    stroke-width="3"
+                                ></path>
+                            </svg>
+                            <div class="droplet-info">
+                                <h4 id="droplet-status-heading">Soil Water Fill</h4>
+                                <p id="droplet-deficit-text">Enter or sync a moisture reading to view deficit to minimum and target levels.</p>
+                                <div id="droplet-water-volume-pill" class="droplet-volume-pill" style="display: none;"></div>
+                            </div>
+                        </div>
 
-                <p
-                    id="irrigation-message"
-                    class="irrigation-message"
+                        <div class="dashboard-kpi-grid">
+                            <div class="kpi-mini-card">
+                                <span class="kpi-mini-label">Current Moisture</span>
+                                <strong id="kpi-current-moisture">--%</strong>
+                            </div>
+                            <div class="kpi-mini-card">
+                                <span class="kpi-mini-label">Min Acceptable</span>
+                                <strong id="kpi-min-moisture" class="text-danger">35%</strong>
+                            </div>
+                            <div class="kpi-mini-card">
+                                <span class="kpi-mini-label">Target Level</span>
+                                <strong id="kpi-target-moisture" class="text-success">55%</strong>
+                            </div>
+                            <div class="kpi-mini-card">
+                                <span class="kpi-mini-label">Soil Condition</span>
+                                <strong id="kpi-soil-condition">No Reading</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Horizontal Threshold & Zone Bar -->
+                <div class="threshold-bar-wrapper">
+                    <div class="threshold-bar-header">
+                        <strong>Soil Moisture Spectrum (0% – 100%)</strong>
+                        <span id="zone-bar-summary-label">Zones: Dry | Optimal | Too Wet</span>
+                    </div>
+                    <div class="zone-bar-outer">
+                        <div class="zone-bar-track">
+                            <div id="zone-segment-dry" class="zone-segment zone-dry" style="width: 35%;">
+                                <span>Dry (&lt;35%)</span>
+                            </div>
+                            <div id="zone-segment-optimal" class="zone-segment zone-optimal" style="width: 45%;">
+                                <span>Optimal (35–80%)</span>
+                            </div>
+                            <div id="zone-segment-wet" class="zone-segment zone-wet" style="width: 20%;">
+                                <span>Too Wet (&gt;80%)</span>
+                            </div>
+                        </div>
+                        <div id="bar-pin-min" class="bar-pin bar-pin-min" style="left: 35%;" title="Minimum Threshold"></div>
+                        <div id="bar-pin-target" class="bar-pin bar-pin-target" style="left: 55%;" title="Target Moisture"></div>
+                        <div id="bar-pointer-current" class="bar-pointer-current" style="left: 0%; display: none;" title="Current Moisture"></div>
+                    </div>
+                    <div class="zone-bar-scale">
+                        <span>0%</span>
+                        <span id="scale-min-label" class="text-danger">Min: 35%</span>
+                        <span id="scale-target-label" class="text-success">Target: 55%</span>
+                        <span id="scale-wet-label" class="text-primary-blue">Too Wet: 80%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <!-- Official Backend Check Result Section (Preserves existing DOM IDs) -->
+                <div
+                    id="irrigation-result"
+                    class="irrigation-result-embedded"
+                    style="display: none;"
                 >
-                </p>
-
-
-                <div class="irrigation-metrics">
-
-
-                    <div class="irrigation-metric">
-
-                        <span class="metric-label">
-                            Crop
-                        </span>
-
-                        <strong id="result-crop">
-                            -
-                        </strong>
-
+                    <div class="result-status-icon" id="result-status-icon">
+                        <i class="fas fa-tint"></i>
                     </div>
+                    <h2 id="irrigation-status">Irrigation Status</h2>
+                    <p id="irrigation-message" class="irrigation-message"></p>
 
-
-                    <div class="irrigation-metric">
-
-                        <span class="metric-label">
-                            Soil Moisture
-                        </span>
-
-                        <strong>
-                            <span id="result-moisture">-</span>%
-                        </strong>
-
+                    <div class="irrigation-metrics">
+                        <div class="irrigation-metric">
+                            <span class="metric-label">Crop</span>
+                            <strong id="result-crop">-</strong>
+                        </div>
+                        <div class="irrigation-metric">
+                            <span class="metric-label">Soil Moisture</span>
+                            <strong><span id="result-moisture">-</span>%</strong>
+                        </div>
+                        <div class="irrigation-metric">
+                            <span class="metric-label">Required Threshold</span>
+                            <strong><span id="result-threshold">-</span>%</strong>
+                        </div>
                     </div>
-
-
-                    <div class="irrigation-metric">
-
-                        <span class="metric-label">
-                            Required Threshold
-                        </span>
-
-                        <strong>
-                            <span id="result-threshold">-</span>%
-                        </strong>
-
-                    </div>
-
-
                 </div>
-
             </div>
 
+            <!-- 5. WATER REQUIREMENT ESTIMATION CALCULATOR CARD -->
+            <div class="irrigation-card">
+                <div class="irrigation-card-header">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                        <h2>Water Requirement Estimator</h2>
+                        <p>Calculate estimated water deficit (mm) and water volume (litres / m³) needed to reach your target moisture.</p>
+                    </div>
+                </div>
+
+                <div class="calculator-grid">
+                    <!-- Field Area -->
+                    <div class="form-group">
+                        <label for="calc-field-area">
+                            <i class="fas fa-vector-square"></i> Field Area
+                        </label>
+                        <input
+                            type="number"
+                            id="calc-field-area"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Enter field area (e.g. 1.5)"
+                        >
+                        <small id="calc-area-source-note" class="field-source-note"></small>
+                    </div>
+
+                    <!-- Field Area Unit -->
+                    <div class="form-group">
+                        <label for="calc-area-unit">
+                            <i class="fas fa-ruler-combined"></i> Area Unit
+                        </label>
+                        <select id="calc-area-unit">
+                            <option value="hectare">Hectares (ha) — 1 ha = 10,000 m²</option>
+                            <option value="acre">Acres (ac) — 1 ac ≈ 4,046.86 m²</option>
+                            <option value="gunta">Guntas (guntha) — 1 gunta ≈ 101.17 m²</option>
+                            <option value="sqm">Square Metres (m²)</option>
+                        </select>
+                        <small id="calc-converted-sqm" class="helper-note"></small>
+                    </div>
+
+                    <!-- Effective Root-Zone Soil Depth -->
+                    <div class="form-group calculator-full-col">
+                        <label for="calc-soil-depth">
+                            <i class="fas fa-arrows-alt-v"></i> Effective Root-Zone Soil Depth (mm)
+                        </label>
+                        <div class="preset-chips-row">
+                            <button type="button" class="preset-chip" data-depth-mm="300">
+                                Shallow (300 mm — Leafy / Onion)
+                            </button>
+                            <button type="button" class="preset-chip" data-depth-mm="450">
+                                Medium (450 mm — Vegetables / Pulses)
+                            </button>
+                            <button type="button" class="preset-chip" data-depth-mm="600">
+                                Deep (600 mm — Wheat / Maize / Cotton)
+                            </button>
+                            <button type="button" class="preset-chip" data-depth-mm="900">
+                                Orchard (900 mm — Fruit Trees)
+                            </button>
+                        </div>
+                        <input
+                            type="number"
+                            id="calc-soil-depth"
+                            min="10"
+                            max="3000"
+                            step="10"
+                            placeholder="Select a preset above or enter measured root depth in mm (e.g. 450)"
+                        >
+                    </div>
+
+                    <!-- Irrigation System Efficiency -->
+                    <div class="form-group">
+                        <label for="calc-efficiency-preset">
+                            <i class="fas fa-shower"></i> Irrigation Method / Efficiency (Optional)
+                        </label>
+                        <select id="calc-efficiency-preset">
+                            <option value="">Net Requirement Only (Unadjusted)</option>
+                            <option value="90">Drip Irrigation (~90% Efficiency)</option>
+                            <option value="75">Sprinkler System (~75% Efficiency)</option>
+                            <option value="60">Surface / Furrow (~60% Efficiency)</option>
+                            <option value="custom">Custom Efficiency (%)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="custom-efficiency-group" style="display: none;">
+                        <label for="calc-custom-efficiency">
+                            <i class="fas fa-percent"></i> Custom Efficiency (%)
+                        </label>
+                        <input
+                            type="number"
+                            id="calc-custom-efficiency"
+                            min="1"
+                            max="100"
+                            step="1"
+                            placeholder="e.g. 85"
+                        >
+                    </div>
+
+                    <!-- Volumetric Confirmation -->
+                    <div class="form-group calculator-full-col">
+                        <label class="checkbox-label vwc-confirm-box">
+                            <input type="checkbox" id="calc-vwc-confirm" checked>
+                            <span>
+                                <strong>Treat soil moisture % as Volumetric Water Content (VWC)</strong>
+                                <br>
+                                <small>Water volume estimation requires moisture readings expressed as volumetric percentage across the root zone.</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Calculator Output or Missing Fields Prompt -->
+                <div id="calc-missing-prompt" class="calc-missing-prompt">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Enter Missing Parameters to Estimate Water Volume</strong>
+                        <p id="calc-missing-reason">Please provide current moisture, field area, and effective root-zone soil depth (mm).</p>
+                    </div>
+                </div>
+
+                <div id="calc-results-panel" class="calc-results-panel" style="display: none;">
+                    <div id="calc-zero-water-notice" class="calc-zero-water-notice" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Current soil moisture meets or exceeds the target moisture level. <strong>0 Litres</strong> of additional water required.</span>
+                    </div>
+
+                    <div class="calc-output-cards">
+                        <div class="calc-output-card">
+                            <span class="calc-output-label">Moisture Deficit to Target</span>
+                            <strong id="calc-out-deficit-pct">0%</strong>
+                            <small id="calc-out-moisture-compare">Current vs Target</small>
+                        </div>
+                        <div class="calc-output-card">
+                            <span class="calc-output-label">Net Water Deficit Depth</span>
+                            <strong id="calc-out-deficit-mm">0 mm</strong>
+                            <small id="calc-out-depth-note">Across root zone</small>
+                        </div>
+                        <div class="calc-output-card highlight-water-card">
+                            <span class="calc-output-label">Estimated Net Water Volume</span>
+                            <strong id="calc-out-net-litres">0 L</strong>
+                            <small id="calc-out-net-m3">0 m³</small>
+                        </div>
+                    </div>
+
+                    <div id="calc-applied-water-banner" class="calc-applied-water-banner" style="display: none;">
+                        <i class="fas fa-water"></i>
+                        <div>
+                            <strong id="calc-applied-title">Gross Applied Water (Adjusted for Efficiency):</strong>
+                            <p id="calc-applied-details"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-assumptions-box">
+                    <h4><i class="fas fa-book-open"></i> Formula &amp; Agronomic Assumptions</h4>
+                    <ul>
+                        <li><strong>Water Deficit (mm)</strong> = max(0, Target Moisture Fraction &minus; Current Moisture Fraction) &times; Effective Soil Depth (mm).</li>
+                        <li><strong>Net Water Volume (Litres)</strong> = Water Deficit (mm) &times; Field Area (m²), since 1 mm of water over 1 m² equals 1 Litre.</li>
+                        <li>Assumes uniform volumetric moisture across the effective root depth and does not account for upcoming rainfall or soil-specific retention curves.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 6. MOISTURE HISTORY CARD -->
+            <div class="irrigation-card">
+                <div class="irrigation-card-header irrigation-header-with-actions">
+                    <div class="header-left-group">
+                        <i class="fas fa-history"></i>
+                        <div>
+                            <h2>Soil Moisture Check History</h2>
+                            <p>Track moisture readings checked during your sessions.</p>
+                        </div>
+                    </div>
+
+                    <div class="history-controls">
+                        <div class="history-filter-tabs">
+                            <button type="button" class="history-filter-btn active" data-filter="all">All</button>
+                            <button type="button" class="history-filter-btn" data-filter="24h">24 Hours</button>
+                            <button type="button" class="history-filter-btn" data-filter="7d">7 Days</button>
+                        </div>
+                        <button type="button" id="clear-history-btn" class="btn btn-outline-sm btn-danger-outline" style="display: none;">
+                            <i class="fas fa-trash-alt"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="backend-history-note">
+                    <i class="fas fa-server"></i>
+                    <span>
+                        <strong>Data Availability Note:</strong> The existing AgriMind backend stores only the latest live sensor reading in memory (<code>/api/sensor/data</code>) without a database time-series table. Readings checked on this page are saved locally in your browser below.
+                    </span>
+                </div>
+
+                <!-- Chart + Table when local checks exist -->
+                <div id="history-content-wrapper" style="display: none;">
+                    <div id="history-bars-chart" class="history-bars-chart"></div>
+                    <div class="history-table-wrapper">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Crop</th>
+                                    <th>Moisture</th>
+                                    <th>Min / Target</th>
+                                    <th>Condition</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Helpful Empty State when no readings exist -->
+                <div id="history-empty-state" class="history-empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-tint-slash"></i>
+                    </div>
+                    <h3>No Moisture History Recorded Yet</h3>
+                    <p>
+                        Historical sensor time-series are not stored on the backend server. Check your crop's irrigation status above to log readings and view your moisture trend chart here.
+                    </p>
+                </div>
+            </div>
 
         </div>
-
     </main>
 
-
     <!-- ================= FOOTER ================= -->
-
     <footer class="footer">
-
         <div class="container">
-
             <div class="footer-content">
-
-
                 <div class="footer-brand">
-
                     <a href="/" class="logo">
-
-                        <i class="fas fa-leaf"></i>
-
-                        AgriMind
-
+                        <i class="fas fa-leaf"></i> AgriMind
                     </a>
-
                     <p>
                         Empowering farmers with AI-driven agricultural insights.
                     </p>
-
                 </div>
-
 
                 <div class="footer-links">
-
-
                     <div class="footer-column">
-
                         <h4>Quick Links</h4>
-
                         <ul>
-
-                            <li>
-                                <a href="/">Home</a>
-                            </li>
-
-                            <li>
-                                <a href="/dashboard">
-                                    Dashboard
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="/about">
-                                    About
-                                </a>
-                            </li>
-
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/dashboard">Dashboard</a></li>
+                            <li><a href="/about">About</a></li>
                         </ul>
-
                     </div>
 
-
                     <div class="footer-column">
-
                         <h4>Resources</h4>
-
                         <ul>
-
-                            <li>
-                                <a href="/analytics">
-                                    Analytics
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="/feedback">
-                                    Feedback
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="/irrigation">
-                                    Smart Irrigation
-                                </a>
-                            </li>
-
+                            <li><a href="/analytics">Analytics</a></li>
+                            <li><a href="/feedback">Feedback</a></li>
+                            <li><a href="/irrigation">Smart Irrigation</a></li>
                         </ul>
-
                     </div>
-
 
                     <div class="footer-column">
-
                         <h4>Contact</h4>
-
                         <ul>
-
-                            <li>
-                                <a href="mailto:support@agrimind.dev">
-                                    support@agrimind.dev
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="tel:+911234567890">
-                                    +91 123 456 7890
-                                </a>
-                            </li>
-
+                            <li><a href="mailto:support@agrimind.dev">support@agrimind.dev</a></li>
+                            <li><a href="tel:+911234567890">+91 123 456 7890</a></li>
                         </ul>
-
                     </div>
-
                 </div>
-
             </div>
-
 
             <div class="footer-bottom">
-
-                <p>
-                    &copy; 2026 AgriMind. All Rights Reserved.
-                </p>
-
-
+                <p>&copy; 2026 AgriMind. All Rights Reserved.</p>
                 <div class="social-icons">
-
-                    <a href="#" aria-label="Facebook">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-
-                    <a href="#" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-
-                    <a href="#" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-
-                    <a href="#" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 </div>
-
             </div>
-
         </div>
-
     </footer>
-
 
     <script src="/js/smart-irrigation.js"></script>
     <script src="/js/main.js"></script>
-
 </body>
 
 </html>

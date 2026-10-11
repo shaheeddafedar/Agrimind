@@ -1,18 +1,17 @@
 export const ROUTES = {
   SPLASH: 'Splash',
-  LOGIN: 'Login',
-  SIGNUP: 'Signup',
   MAIN_TABS: 'MainTabs',
-  
-  // Tabs matching web navbar
+
   HOME_TAB: 'HomeTab',
+  ANALYTICS_TAB: 'AnalyticsTab',
+  ABOUT_TAB: 'AboutTab',
   DASHBOARD_TAB: 'DashboardTab',
   IRRIGATION_TAB: 'IrrigationTab',
-  MARKET_TAB: 'MarketTab',
-  ANALYTICS_TAB: 'AnalyticsTab',
   PROFILE_TAB: 'ProfileTab',
-  
-  // Stacks
+
+  LOGIN: 'Login',
+  SIGNUP: 'Signup',
+
   RECOMMENDATION: 'Recommendation',
   FERTILIZER_RESULT: 'FertilizerResult',
   SMART_IRRIGATION: 'SmartIrrigation',
@@ -21,6 +20,5 @@ export const ROUTES = {
   CHAT_ASSISTANT: 'ChatAssistant',
   ABOUT: 'About',
   FEEDBACK: 'Feedback',
+  MARKET_TAB: 'MarketPrices',
 };
-
-export default ROUTES;

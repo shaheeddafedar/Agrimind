@@ -18,34 +18,101 @@ import FeedbackScreen from '../screens/FeedbackScreen';
 import MarketPricesScreen from '../screens/MarketPricesScreen';
 
 import { ROUTES } from './routes';
+import { useAuth } from '../context/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
-export const AppNavigator = () => {
+const AppNavigator = () => {
+const { user, isLoading } = useAuth();
+
+const isAuthenticated = Boolean(user);
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={ROUTES.SPLASH}
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
         }}
       >
-        <Stack.Screen name={ROUTES.SPLASH} component={SplashScreen} />
-        <Stack.Screen name={ROUTES.MAIN_TABS} component={BottomTabNavigator} />
-        <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-        <Stack.Screen name={ROUTES.SIGNUP} component={SignupScreen} />
+        {isLoading ? (
+          <Stack.Screen
+            name={ROUTES.SPLASH}
+            component={SplashScreen}
+          />
+        ) : (
+          <>
+            {/* Always accessible */}
+            <Stack.Screen name={ROUTES.MAIN_TABS}>
+              {(props) => (
+                <BottomTabNavigator
+                  {...props}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            </Stack.Screen>
 
-        {/* Feature Stacks */}
-        <Stack.Screen name={ROUTES.RECOMMENDATION} component={RecommendationScreen} />
-        <Stack.Screen name={ROUTES.FERTILIZER_RESULT} component={FertilizerResultScreen} />
-        <Stack.Screen name={ROUTES.SMART_IRRIGATION} component={SmartIrrigationScreen} />
-        <Stack.Screen name={ROUTES.HISTORY} component={HistoryScreen} />
-        <Stack.Screen name={ROUTES.HISTORY_DETAIL} component={HistoryDetailScreen} />
-        <Stack.Screen name={ROUTES.CHAT_ASSISTANT} component={ChatAssistantScreen} />
-        <Stack.Screen name={ROUTES.ABOUT} component={AboutScreen} />
-        <Stack.Screen name={ROUTES.FEEDBACK} component={FeedbackScreen} />
-        <Stack.Screen name={ROUTES.MARKET_TAB} component={MarketPricesScreen} />
+            <Stack.Screen
+              name={ROUTES.LOGIN}
+              component={LoginScreen}
+            />
+
+            <Stack.Screen
+              name={ROUTES.SIGNUP}
+              component={SignupScreen}
+            />
+
+            {/* Public About route for existing navigation calls */}
+            <Stack.Screen
+              name={ROUTES.ABOUT}
+              component={AboutScreen}
+            />
+
+            {/* Available only when authenticated */}
+            {isAuthenticated && (
+              <>
+                <Stack.Screen
+                  name={ROUTES.RECOMMENDATION}
+                  component={RecommendationScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.FERTILIZER_RESULT}
+                  component={FertilizerResultScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.SMART_IRRIGATION}
+                  component={SmartIrrigationScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.HISTORY}
+                  component={HistoryScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.HISTORY_DETAIL}
+                  component={HistoryDetailScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.CHAT_ASSISTANT}
+                  component={ChatAssistantScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.FEEDBACK}
+                  component={FeedbackScreen}
+                />
+
+                <Stack.Screen
+                  name={ROUTES.MARKET_TAB}
+                  component={MarketPricesScreen}
+                />
+              </>
+            )}
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

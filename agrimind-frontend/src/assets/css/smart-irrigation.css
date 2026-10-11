@@ -1,5 +1,5 @@
 /* ==========================================
-   SMART IRRIGATION PAGE
+   SMART IRRIGATION PAGE (agrimind-frontend)
 ========================================== */
 
 .irrigation-page-header {
@@ -12,14 +12,17 @@
     margin-bottom: 0.5rem;
 }
 
+.irrigation-title-icon {
+    color: #f7f7f7;
+}
+
 .irrigation-content {
-    max-width: 900px;
+    max-width: 960px;
     margin: 3rem auto;
 }
 
-
 /* ==========================================
-   CARD
+   CARD & HEADERS
 ========================================== */
 
 .irrigation-card {
@@ -28,32 +31,251 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eef2f6;
 }
-
-
-/* ==========================================
-   CARD HEADER
-========================================== */
 
 .irrigation-card-header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
-.irrigation-card-header > i {
-    font-size: 2rem;
+.irrigation-header-with-actions {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.irrigation-card-header > i,
+.header-left-group > i {
+    font-size: 1.8rem;
+    color: var(--primary-color, #2E8B57);
 }
 
 .irrigation-card-header h2 {
     margin: 0;
+    font-size: 1.4rem;
+    text-align: left;
+    color: var(--darker-color, #212529);
 }
 
 .irrigation-card-header p {
-    margin: 0.4rem 0 0;
+    margin: 0.25rem 0 0;
+    color: #64748b;
+    font-size: 0.92rem;
 }
 
+.btn-outline-sm {
+    background: #f8fafc;
+    color: var(--primary-color, #2E8B57);
+    border: 1.5px solid var(--primary-color, #2E8B57);
+    padding: 8px 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-outline-sm:hover {
+    background: var(--primary-color, #2E8B57);
+    color: #ffffff;
+    transform: none;
+}
+
+.btn-danger-outline {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger-outline:hover {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-success {
+    color: #15803d !important;
+}
+
+.text-primary-blue {
+    color: #2878ff !important;
+}
+
+/* ==========================================
+   ALERT & RECOVERY BANNERS
+========================================== */
+
+.alert-banner {
+    border-radius: 12px;
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 1.5rem;
+    border-left: 5px solid;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.alert-warning-banner {
+    background: #fef2f2;
+    border-color: #dc3545;
+    color: #7f1d1d;
+}
+
+.alert-recovery-banner {
+    background: #f0fdf4;
+    border-color: #16a34a;
+    color: #14532d;
+}
+
+.alert-banner-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+
+.alert-banner p {
+    margin: 0;
+    font-size: 0.94rem;
+}
+
+/* ==========================================
+   COMPACT SENSOR STATUS INDICATOR
+========================================== */
+
+.compact-sensor-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.35rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.compact-sensor-left {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.compact-sensor-text {
+    line-height: 1.4;
+}
+
+.sensor-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.sensor-dot-live {
+    background: #2e8b57;
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+}
+
+.sensor-dot-stale {
+    background: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+.sensor-dot-offline {
+    background: #94a3b8;
+}
+
+/* ==========================================
+   NOTIFICATION SETTINGS & ERROR BOX
+========================================== */
+
+.notif-settings-panel {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.notif-settings-panel h4 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.notif-pref-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.92rem;
+    cursor: pointer;
+    color: #334155;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--primary-color, #2E8B57);
+}
+
+.notif-permission-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+}
+
+.notif-status-tag {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.notif-limitation-note {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.45;
+}
+
+.irrigation-error-box {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #f87171;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+}
 
 /* ==========================================
    FORM
@@ -69,20 +291,55 @@
     margin: 0;
 }
 
-#irrigation-form label {
+#irrigation-form label,
+.calculator-grid label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
 
 #irrigation-form select,
-#irrigation-form input {
+#irrigation-form input,
+.calculator-grid select,
+.calculator-grid input[type="number"] {
     width: 100%;
     padding: 12px;
     border-radius: 6px;
     border: 1px solid #ced4da;
     font-size: 1rem;
     box-sizing: border-box;
+    background: #ffffff;
+}
+
+.threshold-preview-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.92rem;
+}
+
+.threshold-preview-empty {
+    color: #64748b;
+    font-size: 0.88rem;
+}
+
+.threshold-type-tag {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.field-warning-note {
+    display: block;
+    margin-top: 0.35rem;
+    color: #b45309;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .irrigation-check-btn {
@@ -91,13 +348,288 @@
     margin-top: 0.5rem;
 }
 
+/* ==========================================
+   VISUAL MOISTURE DASHBOARD & GAUGE
+========================================== */
+
+.visual-dashboard-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.75rem;
+    align-items: center;
+    margin-bottom: 1.75rem;
+}
+
+.gauge-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circular-gauge-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#gauge-progress-circle {
+    transition: stroke-dashoffset 0.45s ease, stroke 0.3s ease;
+}
+
+.gauge-center-label {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    pointer-events: none;
+}
+
+.gauge-big-number {
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #1e293b;
+}
+
+.condition-pill {
+    margin-top: 4px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+.condition-dry {
+    background: #fef2f2;
+    color: #dc3545;
+    border-color: #fca5a5;
+}
+
+.condition-optimal {
+    background: #dcfce7;
+    color: #15803d;
+    border-color: #86efac;
+}
+
+.condition-wet {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+}
+
+.condition-unknown {
+    background: #f1f5f9;
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+.gauge-crop-sub {
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.gauge-ring-legend {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+}
+
+.droplet-and-kpis-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.droplet-visual-card {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+}
+
+.droplet-svg {
+    flex-shrink: 0;
+}
+
+.droplet-info h4 {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+    color: #1e293b;
+}
+
+.droplet-info p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #475569;
+}
+
+.droplet-volume-pill {
+    margin-top: 0.6rem;
+    display: inline-block;
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.dashboard-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.kpi-mini-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.kpi-mini-label {
+    display: block;
+    font-size: 0.76rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.kpi-mini-card strong {
+    font-size: 1.05rem;
+    color: #1e293b;
+}
+
+/* ==========================================
+   HORIZONTAL THRESHOLD ZONE BAR
+========================================== */
+
+.threshold-bar-wrapper {
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.threshold-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.86rem;
+    margin-bottom: 0.5rem;
+    color: #334155;
+}
+
+.zone-bar-outer {
+    position: relative;
+    height: 34px;
+    display: flex;
+    align-items: center;
+}
+
+.zone-bar-track {
+    display: flex;
+    width: 100%;
+    height: 26px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+}
+
+.zone-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-top: 3px solid;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.zone-dry {
+    background: #fee2e2;
+    color: #991b1b;
+    border-top-color: #dc3545;
+}
+
+.zone-optimal {
+    background: #dcfce7;
+    color: #166534;
+    border-top-color: #2e8b57;
+}
+
+.zone-wet {
+    background: #dbeafe;
+    color: #1e40af;
+    border-top-color: #2878ff;
+}
+
+.bar-pin {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 2.5px dashed;
+    pointer-events: none;
+}
+
+.bar-pin-min {
+    border-color: #dc3545;
+}
+
+.bar-pin-target {
+    border-color: #15803d;
+}
+
+.bar-pointer-current {
+    position: absolute;
+    top: -2px;
+    width: 14px;
+    height: 38px;
+    margin-left: -7px;
+    border-radius: 7px;
+    background: #1e293b;
+    border: 2.5px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    transition: left 0.35s ease;
+}
+
+.zone-bar-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 0.4rem;
+    font-weight: 600;
+}
 
 /* ==========================================
    RESULT
 ========================================== */
 
-.irrigation-result {
+.irrigation-result,
+.irrigation-result-embedded {
     text-align: center;
+}
+
+.irrigation-result-embedded {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 2px solid #f1f5f9;
 }
 
 .result-status-icon {
@@ -130,11 +662,6 @@
     margin: 0 auto 2rem;
 }
 
-
-/* ==========================================
-   METRICS
-========================================== */
-
 .irrigation-metrics {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -157,24 +684,364 @@
     font-size: 1.2rem;
 }
 
+/* ==========================================
+   WATER REQUIREMENT CALCULATOR
+========================================== */
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.calculator-full-col {
+    grid-column: 1 / -1;
+}
+
+.field-source-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    color: #15803d;
+    font-weight: 600;
+}
+
+.helper-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.preset-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+}
+
+.preset-chip {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.preset-chip.active,
+.preset-chip:hover {
+    background: #dcfce7;
+    color: #166534;
+    border-color: #2e8b57;
+}
+
+.vwc-confirm-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+}
+
+.calc-missing-prompt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    color: #92400e;
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+}
+
+.calc-missing-prompt i {
+    font-size: 1.3rem;
+    margin-top: 2px;
+}
+
+.calc-missing-prompt p {
+    margin: 0.25rem 0 0;
+    font-size: 0.88rem;
+}
+
+.calc-zero-water-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+}
+
+.calc-output-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.calc-output-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 1.15rem;
+    text-align: center;
+}
+
+.highlight-water-card {
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.calc-output-label {
+    display: block;
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.calc-output-card strong {
+    display: block;
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 0.2rem;
+}
+
+.highlight-water-card strong {
+    color: #1d4ed8;
+}
+
+.calc-output-card small {
+    font-size: 0.78rem;
+    color: #64748b;
+}
+
+.calc-applied-water-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: #e0f2fe;
+    border: 1px solid #7dd3fc;
+    color: #0c4a6e;
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+}
+
+.calc-applied-water-banner p {
+    margin: 0.2rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.calc-assumptions-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+}
+
+.calc-assumptions-box h4 {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.calc-assumptions-box ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.calc-assumptions-box li {
+    margin-bottom: 0.25rem;
+}
+
+/* ==========================================
+   MOISTURE HISTORY SECTION
+========================================== */
+
+.history-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.history-filter-tabs {
+    display: flex;
+    background: #f1f5f9;
+    padding: 3px;
+    border-radius: 8px;
+}
+
+.history-filter-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+}
+
+.history-filter-btn.active {
+    background: var(--primary-color, #2E8B57);
+    color: #ffffff;
+}
+
+.backend-history-note {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    color: #64748b;
+    margin-bottom: 1.25rem;
+}
+
+.history-bars-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 170px;
+    padding: 1.5rem 1rem 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+.history-bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    flex: 1;
+    max-width: 64px;
+}
+
+.history-bar-val {
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.history-bar-track {
+    width: 20px;
+    height: 110px;
+    background: #e2e8f0;
+    border-radius: 5px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.history-bar-fill {
+    width: 100%;
+    border-radius: 5px;
+    transition: height 0.3s ease;
+}
+
+.history-bar-time {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin-top: 5px;
+    white-space: nowrap;
+}
+
+.history-table-wrapper {
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.history-table th,
+.history-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.history-table th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+}
+
+.history-empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #64748b;
+}
+
+.empty-state-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    color: #2e8b57;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+}
+
+.history-empty-state h3 {
+    font-size: 1.15rem;
+    color: #1e293b;
+    margin-bottom: 0.4rem;
+}
+
+.history-empty-state p {
+    max-width: 520px;
+    margin: 0 auto;
+    font-size: 0.9rem;
+}
 
 /* ==========================================
    RESPONSIVE
 ========================================== */
 
 @media (max-width: 768px) {
-
-    #irrigation-form {
+    #irrigation-form,
+    .calculator-grid,
+    .sensor-offline-tools {
         grid-template-columns: 1fr;
     }
 
-    .irrigation-metrics {
+    .visual-dashboard-grid {
         grid-template-columns: 1fr;
     }
 
-}
+    .dashboard-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-.irrigation-title-icon {
-    color: #f7f7f7;
+    .irrigation-metrics,
+    .calc-output-cards {
+        grid-template-columns: 1fr;
+    }
 }
-

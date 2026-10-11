@@ -20,6 +20,7 @@ import AgriHeader from '../components/common/AgriHeader';
 import AgriCard from '../components/common/AgriCard';
 import AgriButton from '../components/common/AgriButton';
 import colors from '../theme/colors';
+import { ROUTES } from '../navigation/routes';
 
 export const HomeScreen = ({ navigation }) => {
   const { user } = useAuth();
@@ -108,34 +109,44 @@ export const HomeScreen = ({ navigation }) => {
           user ? (
             <TouchableOpacity
               style={styles.navUserBadge}
-              onPress={() => navigation.navigate('ProfileTab')}
+              onPress={() => {
+                if (user) {
+                  navigation.navigate(ROUTES.MAIN_TABS, {
+                    screen: ROUTES.PROFILE_TAB,
+                  });
+                } else {
+                  navigation.navigate(ROUTES.LOGIN);
+                }
+              }}
               activeOpacity={0.8}
             >
-             <Image
-  source={
-    user.profilePhoto
-      ? {
-          uri: user.profilePhoto.startsWith('http')
-            ? user.profilePhoto
-            : Platform.OS === 'web'
-              ? `/agrimind-api${user.profilePhoto}`
-              : `${getApiBaseUrl()}${user.profilePhoto}`,
-        }
-      : require('../../assets/images/logo.png')
-  }
-  style={styles.navAvatar}
-/>
+              <Image
+                source={
+                  user.profilePhoto
+                    ? {
+                        uri: user.profilePhoto.startsWith("http")
+                          ? user.profilePhoto
+                          : Platform.OS === "web"
+                            ? `/agrimind-api${user.profilePhoto}`
+                            : `${getApiBaseUrl()}${user.profilePhoto}`,
+                      }
+                    : require("../../assets/images/logo.png")
+                }
+                style={styles.navAvatar}
+              />
               <Text style={styles.navUserName} numberOfLines={1}>
-                {user.name?.split(' ')[0] || 'User'}
+                {user.name?.split(" ")[0] || "User"}
               </Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.navLoginBtn}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate("Login")}
               activeOpacity={0.8}
             >
-              <Text style={styles.navLoginText}>{t('nav_login', 'Log In')}</Text>
+              <Text style={styles.navLoginText}>
+                {t("nav_login", "Log In")}
+              </Text>
             </TouchableOpacity>
           )
         }
@@ -148,31 +159,48 @@ export const HomeScreen = ({ navigation }) => {
         {/* HERO SECTION */}
         <View style={styles.heroSection}>
           <Text style={styles.heroTitle}>
-            {t('hero_title', 'Intelligent Crop Recommendations for Modern Farmers')}
+            {t(
+              "hero_title",
+              "Intelligent Crop Recommendations for Modern Farmers",
+            )}
           </Text>
           <Text style={styles.heroSubtitle}>
-            {t('hero_desc', 'Empowering agriculture with AI-driven insights.')}
+            {t("hero_desc", "Empowering agriculture with AI-driven insights.")}
           </Text>
 
           <AgriButton
-            title={t('hero_cta', 'Get Recommendation')}
-            onPress={() => handleProtectedClick('DashboardTab')}
-            icon={<FontAwesome5 name="seedling" size={16} color={colors.primary} />}
+            title={t("hero_cta", "Get Recommendation")}
+            onPress={() => handleProtectedClick("DashboardTab")}
+            icon={
+              <FontAwesome5 name="seedling" size={16} color={colors.primary} />
+            }
             style={styles.heroCtaBtn}
-            textStyle={{ color: colors.primary, fontWeight: '700', fontSize: 15 }}
+            textStyle={{
+              color: colors.primary,
+              fontWeight: "700",
+              fontSize: 15,
+            }}
           />
 
           {/* Floating Highlights (Exact Web frosted cards with white text/icons) */}
           <View style={styles.heroHighlights}>
             <View style={styles.highlightCard}>
               <FontAwesome5 name="seedling" size={24} color="#FFFFFF" />
-              <Text style={styles.highlightTitle}>{t('card_smart_title', 'Smart Farming')}</Text>
-              <Text style={styles.highlightDesc}>{t('card_smart_desc', 'AI powered insights')}</Text>
+              <Text style={styles.highlightTitle}>
+                {t("card_smart_title", "Smart Farming")}
+              </Text>
+              <Text style={styles.highlightDesc}>
+                {t("card_smart_desc", "AI powered insights")}
+              </Text>
             </View>
             <View style={styles.highlightCard}>
               <FontAwesome5 name="chart-line" size={24} color="#FFFFFF" />
-              <Text style={styles.highlightTitle}>{t('card_yield_title', 'Higher Yield')}</Text>
-              <Text style={styles.highlightDesc}>{t('card_yield_desc', 'Maximize your profits')}</Text>
+              <Text style={styles.highlightTitle}>
+                {t("card_yield_title", "Higher Yield")}
+              </Text>
+              <Text style={styles.highlightDesc}>
+                {t("card_yield_desc", "Maximize your profits")}
+              </Text>
             </View>
           </View>
         </View>
@@ -183,18 +211,32 @@ export const HomeScreen = ({ navigation }) => {
             <View style={styles.marketHeader}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.marketHeaderTitle}>
-                  <FontAwesome5 name="chart-line" size={16} color={colors.primary} />
-                  {'  '}{t('live_market_prices', 'Live Karnataka Market Prices')}
+                  <FontAwesome5
+                    name="chart-line"
+                    size={16}
+                    color={colors.primary}
+                  />
+                  {"  "}
+                  {t("live_market_prices", "Live Karnataka Market Prices")}
                 </Text>
                 <Text style={styles.marketDateText}>
-                  {marketDate || t('market_select_district', 'Select a district to view the latest market prices')}
+                  {marketDate ||
+                    t(
+                      "market_select_district",
+                      "Select a district to view the latest market prices",
+                    )}
                 </Text>
               </View>
 
               {/* District Selector Button */}
               <View style={styles.districtSelectCol}>
                 <Text style={styles.districtLabel}>
-                  <FontAwesome5 name="map-marker-alt" size={12} color={colors.textSecondary} /> {t('market_district', 'District')}
+                  <FontAwesome5
+                    name="map-marker-alt"
+                    size={12}
+                    color={colors.textSecondary}
+                  />{" "}
+                  {t("market_district", "District")}
                 </Text>
                 <TouchableOpacity
                   style={styles.districtSelectorBtn}
@@ -202,7 +244,12 @@ export const HomeScreen = ({ navigation }) => {
                   activeOpacity={0.8}
                 >
                   <Text style={styles.districtBtnText}>{selectedDistrict}</Text>
-                  <Ionicons name="chevron-down" size={14} color={colors.primary} style={{ marginLeft: 4 }} />
+                  <Ionicons
+                    name="chevron-down"
+                    size={14}
+                    color={colors.primary}
+                    style={{ marginLeft: 4 }}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -210,7 +257,9 @@ export const HomeScreen = ({ navigation }) => {
             {loadingMarket ? (
               <View style={styles.marketLoadingBox}>
                 <ActivityIndicator size="small" color={colors.primary} />
-                <Text style={styles.marketLoadingText}>{t('market_loading', 'Loading live market rates...')}</Text>
+                <Text style={styles.marketLoadingText}>
+                  {t("market_loading", "Loading live market rates...")}
+                </Text>
               </View>
             ) : marketPrices.length > 0 ? (
               <View style={styles.marketPricesGrid}>
@@ -224,19 +273,26 @@ export const HomeScreen = ({ navigation }) => {
                     </View>
 
                     <Text style={styles.marketPriceNumber}>
-                      ₹{Number(item.modalPrice || 0).toLocaleString('en-IN')}
+                      ₹{Number(item.modalPrice || 0).toLocaleString("en-IN")}
                     </Text>
-                    <Text style={styles.marketPriceSub}>{t('market_modal_price', 'Modal price per quintal')}</Text>
+                    <Text style={styles.marketPriceSub}>
+                      {t("market_modal_price", "Modal price per quintal")}
+                    </Text>
 
                     <View style={styles.marketStoreRow}>
-                      <FontAwesome5 name="store" size={11} color="#718096" style={{ marginRight: 5 }} />
+                      <FontAwesome5
+                        name="store"
+                        size={11}
+                        color="#718096"
+                        style={{ marginRight: 5 }}
+                      />
                       <Text style={styles.marketStoreText} numberOfLines={1}>
                         {item.market}
                       </Text>
                     </View>
 
                     <Text style={styles.marketVarietyText} numberOfLines={1}>
-                      {t('market_variety', 'Variety')}: {item.variety}
+                      {t("market_variety", "Variety")}: {item.variety}
                     </Text>
                   </View>
                 ))}
@@ -244,11 +300,12 @@ export const HomeScreen = ({ navigation }) => {
                 {marketPrices.length > 6 && (
                   <TouchableOpacity
                     style={styles.viewMoreMarketBtn}
-                    onPress={() => navigation.navigate('MarketTab')}
+                    onPress={() => navigation.navigate("MarketTab")}
                     activeOpacity={0.8}
                   >
                     <Text style={styles.viewMoreMarketText}>
-                      {t('view_all_apmc_rates', 'View All APMC Rates for')} {selectedDistrict} →
+                      {t("view_all_apmc_rates", "View All APMC Rates for")}{" "}
+                      {selectedDistrict} →
                     </Text>
                   </TouchableOpacity>
                 )}
@@ -256,7 +313,8 @@ export const HomeScreen = ({ navigation }) => {
             ) : (
               <View style={styles.marketEmptyBox}>
                 <Text style={styles.marketEmptyText}>
-                  {t('market_no_data', 'No market price data available for')} {selectedDistrict}.
+                  {t("market_no_data", "No market price data available for")}{" "}
+                  {selectedDistrict}.
                 </Text>
               </View>
             )}
@@ -266,55 +324,85 @@ export const HomeScreen = ({ navigation }) => {
         {/* STATS SECTION (Exact Web green background #2E8B57, white text) */}
         <View style={styles.statsSection}>
           <View style={styles.statItem}>
-            <FontAwesome5 name="users" size={24} color="#FFFFFF" style={{ marginBottom: 6 }} />
+            <FontAwesome5
+              name="users"
+              size={24}
+              color="#FFFFFF"
+              style={{ marginBottom: 6 }}
+            />
             <Text style={styles.statNumber}>{stats.farmers}+</Text>
-            <Text style={styles.statLabel}>{t('stat_farmers', 'Farmers Helped')}</Text>
+            <Text style={styles.statLabel}>
+              {t("stat_farmers", "Farmers Helped")}
+            </Text>
           </View>
 
           <View style={styles.statDivider} />
 
           <View style={styles.statItem}>
-            <FontAwesome5 name="tractor" size={22} color="#FFFFFF" style={{ marginBottom: 6 }} />
+            <FontAwesome5
+              name="tractor"
+              size={22}
+              color="#FFFFFF"
+              style={{ marginBottom: 6 }}
+            />
             <Text style={styles.statNumber}>{stats.crops}+</Text>
-            <Text style={styles.statLabel}>{t('stat_crops', 'Crops Recommended')}</Text>
+            <Text style={styles.statLabel}>
+              {t("stat_crops", "Crops Recommended")}
+            </Text>
           </View>
 
           <View style={styles.statDivider} />
 
           <View style={styles.statItem}>
-            <FontAwesome5 name="bullseye" size={24} color="#FFFFFF" style={{ marginBottom: 6 }} />
+            <FontAwesome5
+              name="bullseye"
+              size={24}
+              color="#FFFFFF"
+              style={{ marginBottom: 6 }}
+            />
             <Text style={styles.statNumber}>{stats.accuracy}%</Text>
-            <Text style={styles.statLabel}>{t('stat_accuracy', 'Accuracy Rate')}</Text>
+            <Text style={styles.statLabel}>
+              {t("stat_accuracy", "Accuracy Rate")}
+            </Text>
           </View>
         </View>
 
         {/* ALL 8 FEATURES FROM WEB */}
         <View style={styles.featuresSection}>
-          <Text style={styles.featuresHeading}>{t('feat_title', 'Features')}</Text>
+          <Text style={styles.featuresHeading}>
+            {t("feat_title", "Features")}
+          </Text>
           <Text style={styles.featuresSubtitle}>
-            {t('feat_subtitle', 'Everything you need to grow better.')}
+            {t("feat_subtitle", "Everything you need to grow better.")}
           </Text>
 
           <View style={styles.featuresGrid}>
             {/* 1. AI Crop Recommendation */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => handleProtectedClick('DashboardTab')}
+              onPress={() => handleProtectedClick("DashboardTab")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
                 <FontAwesome5 name="brain" size={28} color={colors.primary} />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_ai_title', 'AI Crop Recommendation')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_ai_title", "AI Crop Recommendation")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_ai_desc', 'Get the best crop suggestions based on soil and weather.')}
+                {t(
+                  "feat_ai_desc",
+                  "Get the best crop suggestions based on soil and weather.",
+                )}
               </Text>
               <View style={styles.featureCtaRow}>
                 <Text style={styles.featureCtaText}>
-                  {user ? t('feat_ai_btn', 'Try Now') : t('login_to_access', 'Log In to Access')}
+                  {user
+                    ? t("feat_ai_btn", "Try Now")
+                    : t("login_to_access", "Log In to Access")}
                 </Text>
                 <FontAwesome5
-                  name={user ? 'arrow-right' : 'lock'}
+                  name={user ? "arrow-right" : "lock"}
                   size={12}
                   color={colors.primary}
                 />
@@ -324,41 +412,64 @@ export const HomeScreen = ({ navigation }) => {
             {/* 2. Multilingual Support */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => navigation.navigate('Feedback')}
+              onPress={() => navigation.navigate("Feedback")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
-                <FontAwesome5 name="language" size={28} color={colors.primary} />
+                <FontAwesome5
+                  name="language"
+                  size={28}
+                  color={colors.primary}
+                />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_fb_title', 'Multilingual Support')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_fb_title", "Multilingual Support")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_fb_desc', 'Available in English, Hindi, and Kannada.')}
+                {t("feat_fb_desc", "Available in English, Hindi, and Kannada.")}
               </Text>
               <View style={styles.featureCtaRow}>
-                <Text style={styles.featureCtaText}>{t('feat_fb_btn', 'Provide Feedback')}</Text>
-                <FontAwesome5 name="arrow-right" size={12} color={colors.primary} />
+                <Text style={styles.featureCtaText}>
+                  {t("feat_fb_btn", "Provide Feedback")}
+                </Text>
+                <FontAwesome5
+                  name="arrow-right"
+                  size={12}
+                  color={colors.primary}
+                />
               </View>
             </TouchableOpacity>
 
             {/* 3. AI Farming Assistant */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => handleProtectedClick('ChatAssistant')}
+              onPress={() => handleProtectedClick("ChatAssistant")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
-                <FontAwesome5 name="comments" size={28} color={colors.primary} />
+                <FontAwesome5
+                  name="comments"
+                  size={28}
+                  color={colors.primary}
+                />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_chat_title', 'AI Farming Assistant')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_chat_title", "AI Farming Assistant")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_chat_desc', 'Chat with our AI bot for quick farming tips.')}
+                {t(
+                  "feat_chat_desc",
+                  "Chat with our AI bot for quick farming tips.",
+                )}
               </Text>
               <View style={styles.featureCtaRow}>
                 <Text style={styles.featureCtaText}>
-                  {user ? t('feat_chat_btn', 'Ask Now') : t('login_to_access', 'Log In to Access')}
+                  {user
+                    ? t("feat_chat_btn", "Ask Now")
+                    : t("login_to_access", "Log In to Access")}
                 </Text>
                 <FontAwesome5
-                  name={user ? 'arrow-right' : 'lock'}
+                  name={user ? "arrow-right" : "lock"}
                   size={12}
                   color={colors.primary}
                 />
@@ -368,60 +479,94 @@ export const HomeScreen = ({ navigation }) => {
             {/* 4. About AgriMind */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => navigation.navigate('About')}
+              onPress={() => navigation.navigate("About")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
                 <FontAwesome5 name="users" size={28} color={colors.primary} />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_about_title', 'About AgriMind')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_about_title", "About AgriMind")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_about_desc', 'Learn more about our mission and vision.')}
+                {t(
+                  "feat_about_desc",
+                  "Learn more about our mission and vision.",
+                )}
               </Text>
               <View style={styles.featureCtaRow}>
-                <Text style={styles.featureCtaText}>{t('feat_about_btn', 'Read More')}</Text>
-                <FontAwesome5 name="arrow-right" size={12} color={colors.primary} />
+                <Text style={styles.featureCtaText}>
+                  {t("feat_about_btn", "Read More")}
+                </Text>
+                <FontAwesome5
+                  name="arrow-right"
+                  size={12}
+                  color={colors.primary}
+                />
               </View>
             </TouchableOpacity>
 
             {/* 5. Farm Analytics */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => navigation.navigate('AnalyticsTab')}
+              onPress={() => navigation.navigate("AnalyticsTab")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
-                <FontAwesome5 name="chart-pie" size={28} color={colors.primary} />
+                <FontAwesome5
+                  name="chart-pie"
+                  size={28}
+                  color={colors.primary}
+                />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_data_title', 'Farm Analytics')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_data_title", "Farm Analytics")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_data_desc', 'View platform statistics and trends.')}
+                {t("feat_data_desc", "View platform statistics and trends.")}
               </Text>
               <View style={styles.featureCtaRow}>
-                <Text style={styles.featureCtaText}>{t('feat_data_btn', 'View Analytics')}</Text>
-                <FontAwesome5 name="arrow-right" size={12} color={colors.primary} />
+                <Text style={styles.featureCtaText}>
+                  {t("feat_data_btn", "View Analytics")}
+                </Text>
+                <FontAwesome5
+                  name="arrow-right"
+                  size={12}
+                  color={colors.primary}
+                />
               </View>
             </TouchableOpacity>
 
             {/* 6. Smart Fertilization */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => handleProtectedClick('DashboardTab')}
+              onPress={() => handleProtectedClick("DashboardTab")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
-                <FontAwesome5 name="seedling" size={28} color={colors.primary} />
+                <FontAwesome5
+                  name="seedling"
+                  size={28}
+                  color={colors.primary}
+                />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_fertilization_title', 'Smart Fertilization')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_fertilization_title", "Smart Fertilization")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_fertilization_desc', 'Get tailored fertilizer recommendations.')}
+                {t(
+                  "feat_fertilization_desc",
+                  "Get tailored fertilizer recommendations.",
+                )}
               </Text>
               <View style={styles.featureCtaRow}>
                 <Text style={styles.featureCtaText}>
-                  {user ? t('feat_fertilization_btn', 'Try Now') : t('login_to_access', 'Log In to Access')}
+                  {user
+                    ? t("feat_fertilization_btn", "Try Now")
+                    : t("login_to_access", "Log In to Access")}
                 </Text>
                 <FontAwesome5
-                  name={user ? 'arrow-right' : 'lock'}
+                  name={user ? "arrow-right" : "lock"}
                   size={12}
                   color={colors.primary}
                 />
@@ -431,22 +576,29 @@ export const HomeScreen = ({ navigation }) => {
             {/* 7. Smart Irrigation */}
             <TouchableOpacity
               style={styles.featureCard}
-              onPress={() => handleProtectedClick('IrrigationTab')}
+              onPress={() => handleProtectedClick("IrrigationTab")}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
                 <FontAwesome5 name="tint" size={28} color={colors.primary} />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_irrigation_title', 'Smart Irrigation')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_irrigation_title", "Smart Irrigation")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_irrigation_desc', 'Check if your crops need watering today.')}
+                {t(
+                  "feat_irrigation_desc",
+                  "Check if your crops need watering today.",
+                )}
               </Text>
               <View style={styles.featureCtaRow}>
                 <Text style={styles.featureCtaText}>
-                  {user ? t('feat_irrigation_btn', 'Check Status') : t('login_to_access', 'Log In to Access')}
+                  {user
+                    ? t("feat_irrigation_btn", "Check Status")
+                    : t("login_to_access", "Log In to Access")}
                 </Text>
                 <FontAwesome5
-                  name={user ? 'arrow-right' : 'lock'}
+                  name={user ? "arrow-right" : "lock"}
                   size={12}
                   color={colors.primary}
                 />
@@ -458,22 +610,40 @@ export const HomeScreen = ({ navigation }) => {
               style={styles.featureCard}
               onPress={() => {
                 Alert.alert(
-                  t('feat_iot_title', 'IoT Smart Farming'),
-                  t('feat_iot_desc', 'Connect farm sensors directly to the app.')
+                  t("feat_iot_title", "IoT Smart Farming"),
+                  t(
+                    "feat_iot_desc",
+                    "Connect farm sensors directly to the app.",
+                  ),
                 );
               }}
               activeOpacity={0.8}
             >
               <View style={styles.featureIcon}>
-                <FontAwesome5 name="microchip" size={28} color={colors.primary} />
+                <FontAwesome5
+                  name="microchip"
+                  size={28}
+                  color={colors.primary}
+                />
               </View>
-              <Text style={styles.featureTitle}>{t('feat_iot_title', 'IoT Smart Farming')}</Text>
+              <Text style={styles.featureTitle}>
+                {t("feat_iot_title", "IoT Smart Farming")}
+              </Text>
               <Text style={styles.featureDesc}>
-                {t('feat_iot_desc', 'Connect farm sensors directly to the app.')}
+                {t(
+                  "feat_iot_desc",
+                  "Connect farm sensors directly to the app.",
+                )}
               </Text>
               <View style={styles.featureCtaRow}>
-                <Text style={styles.featureCtaText}>{t('feat_iot_btn', 'Learn More')}</Text>
-                <FontAwesome5 name="arrow-right" size={12} color={colors.primary} />
+                <Text style={styles.featureCtaText}>
+                  {t("feat_iot_btn", "Learn More")}
+                </Text>
+                <FontAwesome5
+                  name="arrow-right"
+                  size={12}
+                  color={colors.primary}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -482,42 +652,74 @@ export const HomeScreen = ({ navigation }) => {
         {/* WEB-MATCHING FOOTER */}
         <View style={styles.footerSection}>
           <View style={styles.footerBrandRow}>
-            <FontAwesome5 name="leaf" size={18} color={colors.primaryLight} style={{ marginRight: 8 }} />
+            <FontAwesome5
+              name="leaf"
+              size={18}
+              color={colors.primaryLight}
+              style={{ marginRight: 8 }}
+            />
             <Text style={styles.footerBrandTitle}>AgriMind</Text>
           </View>
           <Text style={styles.footerDesc}>
-            {t('footer_desc', 'Empowering agriculture with AI-driven insights and sustainable practices.')}
+            {t(
+              "footer_desc",
+              "Empowering agriculture with AI-driven insights and sustainable practices.",
+            )}
           </Text>
 
           <View style={styles.footerLinksGrid}>
             <View style={styles.footerCol}>
-              <Text style={styles.footerColTitle}>{t('footer_quick_links', 'Quick Links')}</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('HomeTab')}>
-                <Text style={styles.footerLinkText}>{t('nav_home', 'Home')}</Text>
+              <Text style={styles.footerColTitle}>
+                {t("footer_quick_links", "Quick Links")}
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("HomeTab")}>
+                <Text style={styles.footerLinkText}>
+                  {t("nav_home", "Home")}
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleProtectedClick('DashboardTab')}>
-                <Text style={styles.footerLinkText}>{t('nav_dashboard', 'Dashboard')}</Text>
+              <TouchableOpacity
+                onPress={() => handleProtectedClick("DashboardTab")}
+              >
+                <Text style={styles.footerLinkText}>
+                  {t("nav_dashboard", "Dashboard")}
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('About')}>
-                <Text style={styles.footerLinkText}>{t('nav_about', 'About')}</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.footerCol}>
-              <Text style={styles.footerColTitle}>{t('footer_resources', 'Resources')}</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('AnalyticsTab')}>
-                <Text style={styles.footerLinkText}>{t('nav_analytics', 'Analytics')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('Feedback')}>
-                <Text style={styles.footerLinkText}>{t('nav_feedback', 'Feedback')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('IrrigationTab')}>
-                <Text style={styles.footerLinkText}>{t('nav_irrigation', 'Irrigation')}</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("About")}>
+                <Text style={styles.footerLinkText}>
+                  {t("nav_about", "About")}
+                </Text>
               </TouchableOpacity>
             </View>
 
             <View style={styles.footerCol}>
-              <Text style={styles.footerColTitle}>{t('footer_contact', 'Contact')}</Text>
+              <Text style={styles.footerColTitle}>
+                {t("footer_resources", "Resources")}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AnalyticsTab")}
+              >
+                <Text style={styles.footerLinkText}>
+                  {t("nav_analytics", "Analytics")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Feedback")}>
+                <Text style={styles.footerLinkText}>
+                  {t("nav_feedback", "Feedback")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("IrrigationTab")}
+              >
+                <Text style={styles.footerLinkText}>
+                  {t("nav_irrigation", "Irrigation")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.footerCol}>
+              <Text style={styles.footerColTitle}>
+                {t("footer_contact", "Contact")}
+              </Text>
               <Text style={styles.footerContactText}>support@agrimind.dev</Text>
               <Text style={styles.footerContactText}>+91 123 456 7890</Text>
             </View>
@@ -525,7 +727,7 @@ export const HomeScreen = ({ navigation }) => {
 
           <View style={styles.footerBottom}>
             <Text style={styles.footerCopyright}>
-              {t('footer_copyright', '© 2026 AgriMind. All Rights Reserved.')}
+              {t("footer_copyright", "© 2026 AgriMind. All Rights Reserved.")}
             </Text>
           </View>
         </View>
@@ -536,7 +738,9 @@ export const HomeScreen = ({ navigation }) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{t('select_karnataka_district', 'Select Karnataka District')}</Text>
+              <Text style={styles.modalTitle}>
+                {t("select_karnataka_district", "Select Karnataka District")}
+              </Text>
               <TouchableOpacity onPress={() => setDistrictModalVisible(false)}>
                 <Ionicons name="close" size={24} color={colors.textPrimary} />
               </TouchableOpacity>
@@ -557,13 +761,18 @@ export const HomeScreen = ({ navigation }) => {
                   <Text
                     style={[
                       styles.districtItemText,
-                      selectedDistrict === district && styles.districtItemTextActive,
+                      selectedDistrict === district &&
+                        styles.districtItemTextActive,
                     ]}
                   >
                     {district}
                   </Text>
                   {selectedDistrict === district && (
-                    <Ionicons name="checkmark" size={18} color={colors.primary} />
+                    <Ionicons
+                      name="checkmark"
+                      size={18}
+                      color={colors.primary}
+                    />
                   )}
                 </TouchableOpacity>
               ))}
