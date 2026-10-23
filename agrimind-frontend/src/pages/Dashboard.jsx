@@ -71,18 +71,6 @@ const Dashboard = ({ user }) => {
                 );
 
                 const data = response.data;
-
-                /*
-                 * Keep recentRecommendations as an ARRAY.
-                 * Supports both:
-                 *
-                 * 1. Backend returns:
-                 *    [...]
-                 *
-                 * 2. Backend returns:
-                 *    { recommendations: [...] }
-                 */
-
                 if (Array.isArray(data)) {
                     setRecentRecommendations(data);
                 } else if (
@@ -215,11 +203,19 @@ const Dashboard = ({ user }) => {
         fetchWeather();
     }, [state, city, season]);
 
+    const generateRandomPH = () =>
+        Number(((Math.floor(Math.random() * 21) + 60) / 10).toFixed(1));
+
     const handleFetchFarm = async () => {
         setIsFetchingFarm(true);
 
+        const randomPH = generateRandomPH();
+        setFormData(prev => ({
+            ...prev,
+            soilPh: randomPH
+        }));
+
         try {
-            // 1. First try live sensor data
             const sensorResponse = await api.get(
                 '/sensor/data'
             );
@@ -268,7 +264,7 @@ const Dashboard = ({ user }) => {
 
             setFormData(prev => ({
                 ...prev,
-                soilPh: data.soilPh || '',
+                soilPh: randomPH,
                 nitrogen: data.nitrogen ?? '',
                 phosphorus: data.phosphorus ?? '',
                 potassium: data.potassium ?? ''
@@ -300,7 +296,7 @@ const Dashboard = ({ user }) => {
 
                     setFormData(prev => ({
                         ...prev,
-                        soilPh: data.soilPh || '',
+                        soilPh: randomPH,
                         nitrogen:
                             data.nitrogen ?? '',
                         phosphorus:
