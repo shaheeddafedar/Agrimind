@@ -145,10 +145,21 @@ export const DashboardScreen = ({ navigation }) => {
     fetchWeather();
   }, [state, city, season]);
 
+  // Generate a simulated pH value from 6.0 to 8.0 in 0.1 increments.
+  const generateRandomPH = () =>
+    Number((Math.random() * 2 + 6).toFixed(1));
+
   const handleFetchFarm = async () => {
     console.log('Fetch button pressed');
 
     setIsFetchingFarm(true);
+
+    // Update pH every time Fetch is pressed, even if sensor data is unavailable.
+    const randomPH = generateRandomPH();
+    setFormData((prev) => ({
+      ...prev,
+      soilPh: String(randomPH),
+    }));
 
     try {
       try {
@@ -169,6 +180,7 @@ export const DashboardScreen = ({ navigation }) => {
 
           setFormData((prev) => ({
             ...prev,
+            soilPh: String(randomPH),
             nitrogen:
               nitrogen !== undefined && nitrogen !== null
                 ? String(nitrogen)
@@ -215,10 +227,7 @@ export const DashboardScreen = ({ navigation }) => {
         setFormData((prev) => ({
           ...prev,
           farmId: cleanId,
-          soilPh:
-            data.soilPh !== undefined
-              ? String(data.soilPh)
-              : prev.soilPh,
+          soilPh: String(randomPH),
           nitrogen:
             data.nitrogen !== undefined
               ? String(data.nitrogen)
