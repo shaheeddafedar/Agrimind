@@ -697,10 +697,6 @@ exports.checkIrrigation = async (req, res) => {
 
 };
 
-// ==========================================
-// UPDATE LIVE SENSOR DATA
-// Arduino → Python Bridge → Node.js
-// ==========================================
 
 exports.updateSensorData = async (req, res) => {
     try {
@@ -828,9 +824,7 @@ exports.sensorDisconnect = async (req, res) => {
     }
 };
 
-// ==========================================
-// GET LATEST SENSOR DATA
-// ==========================================
+
 
 exports.getSensorData = async (req, res) => {
     try {

@@ -1,11 +1,3 @@
-/**
- * AgriMind Web — Smart Irrigation Frontend Controller
- * Reuses existing backend endpoints:
- *   - GET  /api/sensor/data
- *   - POST /api/irrigation/check
- *   - GET  /api/farm/:farmId
- *   - GET  /api/recommend/:userId
- */
 
 const IRRIGATION_THRESHOLDS = {
     apple: 30,

@@ -10,13 +10,6 @@ const DEFAULT_PREFS = {
   popupAlertEnabled: true,
 };
 
-/**
- * Check notification capabilities in the current runtime.
- * - On Web: uses the standard Web Notification API while the page is open.
- * - On Mobile (Android/iOS): uses in-app warning banners and native Alert dialogs while the app is open.
- *   Background and closed-app push notifications require `expo-notifications`, a custom development build,
- *   and a backend push notification service, which are not installed in this project.
- */
 export const getLocalNotificationCapability = () => {
   if (
     Platform.OS === 'web' &&
