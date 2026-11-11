@@ -5,7 +5,6 @@ import '../assets/css/about.css';
 const About = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-
     return (
         <main className="page-content">
             <div className="page-header">
