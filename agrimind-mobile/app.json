@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "AgriMind",
@@ -6,11 +7,6 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#2E8B57"
-    },
     "ios": {
       "supportsTablet": true
     },
@@ -26,7 +22,16 @@
     "plugins": [
       "expo-font",
       "expo-sharing",
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#2E8B57"
+        }
+      ]
     ]
   }
 }

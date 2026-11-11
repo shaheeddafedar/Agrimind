@@ -513,3 +513,193 @@
 .page-header {
     margin-bottom: 40px !important;
 }
+
+/* =========================================
+   INTERACTIVE CARDS SECTION (CROP FACTORS & PROFIT)
+========================================= */
+
+.about-interactive-section {
+    margin-bottom: 50px;
+    animation: fadeInUp 0.6s ease-out 0.35s both;
+}
+
+.interactive-section-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 32px;
+}
+
+.interactive-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: #e8f5ea;
+    color: #2E8B57;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(46, 139, 87, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.interactive-section-header h2 {
+    font-size: 2rem;
+    color: #212529;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.interactive-section-header p {
+    font-size: 1.05rem;
+    color: #555555;
+    line-height: 1.6;
+}
+
+.feature-action-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+}
+
+.feature-action-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-action-card:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(46, 139, 87, 0.3);
+}
+
+.feature-action-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+}
+
+.feature-action-card.card-factors {
+    border-left: 6px solid #2E8B57;
+}
+
+.feature-action-card.card-factors:hover {
+    border-color: #2E8B57;
+}
+
+.feature-action-card.card-profit {
+    border-left: 6px solid #F4A460;
+}
+
+.feature-action-card.card-profit:hover {
+    border-color: #F4A460;
+}
+
+.card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-action-card:hover .card-icon-circle {
+    transform: scale(1.1);
+}
+
+.factor-icon {
+    background: #e8f5ea;
+    color: #2E8B57;
+}
+
+.profit-icon {
+    background: #fff3e0;
+    color: #d28c50;
+}
+
+.card-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.feature-action-card h3 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #212529;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.feature-action-card p {
+    font-size: 0.98rem;
+    color: #555555;
+    line-height: 1.65;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.card-footer-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid #f0f0f0;
+    font-weight: 700;
+    font-size: 0.98rem;
+    transition: color 0.2s ease;
+}
+
+.card-factors .card-footer-action {
+    color: #2E8B57;
+}
+
+.card-profit .card-footer-action {
+    color: #d28c50;
+}
+
+.card-footer-action i {
+    transition: transform 0.2s ease;
+}
+
+.feature-action-card:hover .card-footer-action i {
+    transform: translateX(6px);
+}
+
+@media (max-width: 768px) {
+    .feature-action-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .interactive-section-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .feature-action-card {
+        padding: 24px 20px;
+    }
+}

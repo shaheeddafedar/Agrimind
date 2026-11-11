@@ -16,7 +16,7 @@ import {
   Switch,
 } from 'react-native';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-
+import { useFocusEffect } from '@react-navigation/native';
 import AgriHeader from '../components/common/AgriHeader';
 import AgriButton from '../components/common/AgriButton';
 import AgriInput from '../components/common/AgriInput';
@@ -354,7 +354,6 @@ export const SmartIrrigationScreen = () => {
     [notifPrefs]
   );
 
-  // Refresh sensor status and optionally apply its reading.
   const pollSensorData = useCallback(
     async (applyToInput = false) => {
       if (refreshingSensor) return null;
@@ -411,7 +410,11 @@ export const SmartIrrigationScreen = () => {
     ]
   );
 
-  // Initial screen setup
+  useFocusEffect(
+  useCallback(() => {
+    pollSensorData(true);
+  }, [pollSensorData])
+);
   useEffect(() => {
     let isMounted = true;
 
@@ -681,16 +684,19 @@ export const SmartIrrigationScreen = () => {
     }
   };
 
-  // Request notification permission
-  const handleRequestBrowserPermission = async () => {
-    try {
-      await requestLocalNotificationPermission();
-    } catch (err) {
-      console.warn('Notification permission request failed:', err);
-    } finally {
-      setNotifCapability(getLocalNotificationCapability());
-    }
-  };
+const handleRequestBrowserPermission = async () => {
+  try {
+    const permission = await requestLocalNotificationPermission();
+
+    setNotifCapability({
+      ...getLocalNotificationCapability(),
+      permission,
+    });
+  } catch (err) {
+    console.warn('Notification permission request failed:', err);
+    setNotifCapability(getLocalNotificationCapability());
+  }
+};
 
   // History filters are calculated relative to the current time.
   const filteredHistory = useMemo(() => {
@@ -1271,6 +1277,182 @@ export const SmartIrrigationScreen = () => {
               description="Check your crop's irrigation status above to save readings on this device and compare them over time."
             />
           )}
+        </View>
+
+        {/* 6. SMART IRRIGATION & SOIL MOISTURE GUIDE */}
+        <View style={styles.card}>
+          <View style={styles.sectionHeaderRow}>
+            <View style={[styles.headerIconCircle, { backgroundColor: '#e0f2fe' }]}>
+              <FontAwesome5 name="book-reader" size={17} color="#0284c7" />
+            </View>
+            <Text style={styles.cardHeading}>
+              {t('smart_irrigation_guide_title', 'Smart Irrigation & Moisture Guide')}
+            </Text>
+          </View>
+          <Text style={styles.bodyText}>
+            {t(
+              'smart_irrigation_guide_sub',
+              'Essential scientific insights on soil moisture, crop water demand, and conservation practices for farmers.'
+            )}
+          </Text>
+
+          {/* Guide Topics */}
+          <View style={{ marginTop: 14 }}>
+            <View style={styles.mobileGuideCard}>
+              <View style={[styles.mobileGuideIcon, { backgroundColor: '#e0f2fe' }]}>
+                <FontAwesome5 name="water" size={15} color="#0284c7" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mobileGuideTitle}>{t('what_is_moisture_title', 'What Soil Moisture Means')}</Text>
+                <Text style={styles.mobileGuideDesc}>
+                  {t(
+                    'what_is_moisture_desc',
+                    "Soil moisture is the percentage of water held in the spaces between soil particles in your crop's root zone. It provides the medium that dissolves soil nutrients so roots can absorb them."
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.mobileGuideCard}>
+              <View style={[styles.mobileGuideIcon, { backgroundColor: '#e8f5ea' }]}>
+                <FontAwesome5 name="eye" size={15} color={colors.primary} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mobileGuideTitle}>{t('why_monitor_title', 'Why Monitoring Soil Moisture Is Important')}</Text>
+                <Text style={styles.mobileGuideDesc}>
+                  {t(
+                    'why_monitor_desc',
+                    'Regular monitoring prevents crop water stress, protects delicate root hairs, prevents fertilizer leaching, and avoids wasting valuable electricity and groundwater.'
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.mobileGuideCard}>
+              <View style={[styles.mobileGuideIcon, { backgroundColor: '#fff3e0' }]}>
+                <FontAwesome5 name="clock" size={15} color={colors.secondaryDark || '#d28c50'} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mobileGuideTitle}>{t('when_to_irrigate_title', 'When Irrigation Is Needed')}</Text>
+                <Text style={styles.mobileGuideDesc}>
+                  {t(
+                    'when_to_irrigate_desc',
+                    "Irrigation is needed whenever soil moisture approaches or falls below the recommended minimum threshold for your specific crop, as indicated by AgriMind's status alert."
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.mobileGuideCard}>
+              <View style={[styles.mobileGuideIcon, { backgroundColor: '#e8f5ea' }]}>
+                <FontAwesome5 name="seedling" size={15} color={colors.primary} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mobileGuideTitle}>{t('how_helps_growth_title', 'How Irrigation Helps Crop Growth')}</Text>
+                <Text style={styles.mobileGuideDesc}>
+                  {t(
+                    'how_helps_growth_desc',
+                    'Maintains leaf cell turgor for optimal sunlight capture, enables continuous nutrient transport from roots to shoots, and keeps plant canopy temperature cool during hot hours.'
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.mobileGuideCard}>
+              <View style={[styles.mobileGuideIcon, { backgroundColor: '#fef2f2' }]}>
+                <FontAwesome5 name="exclamation-triangle" size={15} color="#dc2626" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mobileGuideTitle}>{t('avoid_excess_title', 'Why Excessive Irrigation Should Be Avoided')}</Text>
+                <Text style={styles.mobileGuideDesc}>
+                  {t(
+                    'avoid_excess_desc',
+                    'Over-watering suffocates root respiration by displacing soil oxygen, promotes fungal root rots, washes costly nitrogen fertilizers into deep aquifers, and hardens soil crust.'
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.mobileGuideCard}>
+              <View style={[styles.mobileGuideIcon, { backgroundColor: '#ccfbf1' }]}>
+                <FontAwesome5 name="tint" size={15} color="#0d9488" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mobileGuideTitle}>{t('water_conservation_title', 'How Farmers Can Conserve Water')}</Text>
+                <Text style={styles.mobileGuideDesc}>
+                  {t(
+                    'water_conservation_desc',
+                    'Adopt efficient micro-irrigation systems, apply organic mulch to suppress surface evaporation, irrigate during early morning or evening hours, and schedule irrigation according to sensor moisture readings.'
+                  )}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* 4 Irrigation Methods */}
+          <Text style={[styles.cardHeading, { fontSize: 15, marginTop: 16, marginBottom: 10 }]}>
+            {t('irrigation_methods_heading', '4 Key Irrigation Methods')}
+          </Text>
+
+          <View style={styles.mobileMethodCard}>
+            <View style={[styles.mobileGuideIcon, { backgroundColor: '#e0f2fe' }]}>
+              <FontAwesome5 name="tint" size={15} color="#0284c7" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.mobileGuideTitle}>{t('method_drip_title', 'Drip Irrigation')}</Text>
+              <Text style={styles.mobileGuideDesc}>
+                {t(
+                  'method_drip_desc',
+                  'Applies water directly at the root zone drop-by-drop through emitters. Delivers 90%+ water-use efficiency, saves 40-70% water, and eliminates weed growth between crop rows.'
+                )}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.mobileMethodCard}>
+            <View style={[styles.mobileGuideIcon, { backgroundColor: '#e0e7ff' }]}>
+              <FontAwesome5 name="shower" size={15} color="#4f46e5" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.mobileGuideTitle}>{t('method_sprinkler_title', 'Sprinkler Irrigation')}</Text>
+              <Text style={styles.mobileGuideDesc}>
+                {t(
+                  'method_sprinkler_desc',
+                  'Sprays pressurized water over crops like artificial rain. Ideal for undulating terrain, wheat, pulses, and oilseeds with 75-85% efficiency.'
+                )}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.mobileMethodCard}>
+            <View style={[styles.mobileGuideIcon, { backgroundColor: '#e8f5ea' }]}>
+              <FontAwesome5 name="water" size={15} color={colors.primary} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.mobileGuideTitle}>{t('method_surface_title', 'Surface / Furrow Irrigation')}</Text>
+              <Text style={styles.mobileGuideDesc}>
+                {t(
+                  'method_surface_desc',
+                  'Gravity-fed water flowing through field furrows or basins. Traditional method with 40-50% efficiency; requires precision land leveling to avoid pooling.'
+                )}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.mobileMethodCard}>
+            <View style={[styles.mobileGuideIcon, { backgroundColor: '#fef3c7' }]}>
+              <FontAwesome5 name="layer-group" size={15} color="#d97706" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.mobileGuideTitle}>{t('method_subsurface_title', 'Sub-Surface Drip Irrigation')}</Text>
+              <Text style={styles.mobileGuideDesc}>
+                {t(
+                  'method_subsurface_desc',
+                  'Drip laterals buried underground delivering water directly to deep roots with near zero surface evaporation and no damage from surface machinery.'
+                )}
+              </Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
 
@@ -1897,6 +2079,78 @@ const styles = StyleSheet.create({
   cropListTextActive: {
     fontWeight: '700',
     color: colors.primary,
+  },
+  mobileGuideCard: {
+    flexDirection: 'row',
+    backgroundColor: '#F8FAFC',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  mobileGuideIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 2,
+  },
+  mobileGuideTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.textPrimary,
+    marginBottom: 2,
+  },
+  mobileGuideDesc: {
+    fontSize: 11.5,
+    color: '#64748B',
+    lineHeight: 16,
+  },
+  mobileMethodCard: {
+    flexDirection: 'row',
+    backgroundColor: '#F8FAFC',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 18,
+    marginBottom: 18,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  headerIconCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  cardHeading: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.textPrimary,
+  },
+  bodyText: {
+    fontSize: 12,
+    color: colors.textMuted,
+    marginTop: 2,
   },
 });
 

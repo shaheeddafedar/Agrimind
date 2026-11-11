@@ -1567,6 +1567,114 @@ const SmartIrrigation = ({ user }) => {
             </div>
           )}
         </div>
+
+        {/* 6. SMART IRRIGATION & SOIL MOISTURE EDUCATIONAL GUIDE */}
+        <div className="irrigation-card irrigation-guide-card">
+          <div className="irrigation-card-header">
+            <i className="fas fa-book-reader"></i>
+            <div>
+              <h2>{t('smart_irrigation_guide_title', 'Smart Irrigation & Soil Moisture Guide')}</h2>
+              <p>{t('smart_irrigation_guide_sub', 'Essential scientific insights on soil moisture, crop water demand, and conservation practices for farmers.')}</p>
+            </div>
+          </div>
+
+          <div className="irrigation-guide-grid">
+            <div className="guide-topic-card">
+              <div className="topic-icon-circle blue">
+                <i className="fas fa-water"></i>
+              </div>
+              <h4>{t('what_is_moisture_title', 'What Soil Moisture Means')}</h4>
+              <p>{t('what_is_moisture_desc', "Soil moisture is the percentage of water held in the spaces between soil particles in your crop's root zone. It provides the medium that dissolves soil nutrients so roots can absorb them.")}</p>
+            </div>
+
+            <div className="guide-topic-card">
+              <div className="topic-icon-circle green">
+                <i className="fas fa-eye"></i>
+              </div>
+              <h4>{t('why_monitor_title', 'Why Monitoring Soil Moisture Is Important')}</h4>
+              <p>{t('why_monitor_desc', 'Regular monitoring prevents crop water stress, protects delicate root hairs, prevents fertilizer leaching, and avoids wasting valuable electricity and groundwater.')}</p>
+            </div>
+
+            <div className="guide-topic-card">
+              <div className="topic-icon-circle orange">
+                <i className="fas fa-clock"></i>
+              </div>
+              <h4>{t('when_to_irrigate_title', 'When Irrigation Is Needed')}</h4>
+              <p>{t('when_to_irrigate_desc', "Irrigation is needed whenever soil moisture approaches or falls below the recommended minimum threshold for your specific crop, as indicated by AgriMind's status alert.")}</p>
+            </div>
+
+            <div className="guide-topic-card">
+              <div className="topic-icon-circle green">
+                <i className="fas fa-seedling"></i>
+              </div>
+              <h4>{t('how_helps_growth_title', 'How Irrigation Helps Crop Growth')}</h4>
+              <p>{t('how_helps_growth_desc', 'Maintains leaf cell turgor for optimal sunlight capture, enables continuous nutrient transport from roots to shoots, and keeps plant canopy temperature cool during hot hours.')}</p>
+            </div>
+
+            <div className="guide-topic-card">
+              <div className="topic-icon-circle red">
+                <i className="fas fa-exclamation-triangle"></i>
+              </div>
+              <h4>{t('avoid_excess_title', 'Why Excessive Irrigation Should Be Avoided')}</h4>
+              <p>{t('avoid_excess_desc', 'Over-watering suffocates root respiration by displacing soil oxygen, promotes fungal root rots, washes costly nitrogen fertilizers into deep aquifers, and hardens soil crust.')}</p>
+            </div>
+
+            <div className="guide-topic-card">
+              <div className="topic-icon-circle teal">
+                <i className="fas fa-tint"></i>
+              </div>
+              <h4>{t('water_conservation_title', 'How Farmers Can Conserve Water')}</h4>
+              <p>{t('water_conservation_desc', 'Adopt efficient micro-irrigation systems, apply organic mulch to suppress surface evaporation, irrigate during early morning or evening hours, and schedule irrigation according to sensor moisture readings.')}</p>
+            </div>
+          </div>
+
+          <h3 className="guide-subheading" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1e293b', marginTop: '28px', marginBottom: '16px' }}>
+            <i className="fas fa-faucet" style={{ color: '#0284c7', marginRight: '8px' }}></i>
+            {t('irrigation_methods_heading', '4 Key Irrigation Methods')}
+          </h3>
+
+          <div className="irrigation-methods-grid">
+            <div className="method-card">
+              <div className="method-icon-box drip">
+                <i className="fas fa-tint"></i>
+              </div>
+              <div className="method-content">
+                <h5>{t('method_drip_title', 'Drip Irrigation')}</h5>
+                <p>{t('method_drip_desc', 'Applies water directly at the root zone drop-by-drop through emitters. Delivers 90%+ water-use efficiency, saves 40-70% water, and eliminates weed growth between crop rows.')}</p>
+              </div>
+            </div>
+
+            <div className="method-card">
+              <div className="method-icon-box sprinkler">
+                <i className="fas fa-shower"></i>
+              </div>
+              <div className="method-content">
+                <h5>{t('method_sprinkler_title', 'Sprinkler Irrigation')}</h5>
+                <p>{t('method_sprinkler_desc', 'Sprays pressurized water over crops like artificial rain. Ideal for undulating terrain, wheat, pulses, and oilseeds with 75-85% efficiency.')}</p>
+              </div>
+            </div>
+
+            <div className="method-card">
+              <div className="method-icon-box surface">
+                <i className="fas fa-water"></i>
+              </div>
+              <div className="method-content">
+                <h5>{t('method_surface_title', 'Surface / Furrow Irrigation')}</h5>
+                <p>{t('method_surface_desc', 'Gravity-fed water flowing through field furrows or basins. Traditional method with 40-50% efficiency; requires precision land leveling to avoid pooling.')}</p>
+              </div>
+            </div>
+
+            <div className="method-card">
+              <div className="method-icon-box subsurface">
+                <i className="fas fa-layer-group"></i>
+              </div>
+              <div className="method-content">
+                <h5>{t('method_subsurface_title', 'Sub-Surface Drip Irrigation')}</h5>
+                <p>{t('method_subsurface_desc', 'Drip laterals buried underground delivering water directly to deep roots with near zero surface evaporation and no damage from surface machinery.')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   );

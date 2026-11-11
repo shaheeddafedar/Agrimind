@@ -1,0 +1,735 @@
+/* =========================================
+   CROP PROFIT CALCULATION STYLING
+========================================= */
+
+.profit-page {
+    padding-bottom: 80px;
+    background-color: #f8fafc;
+}
+
+.profit-header {
+    background: linear-gradient(135deg, rgba(210, 140, 80, 0.95), rgba(160, 95, 45, 0.95)),
+        url('https://images.pexels.com/photos/21393/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+        no-repeat center center / cover;
+    color: #ffffff;
+    padding: 60px 0 80px;
+    position: relative;
+    text-align: center;
+}
+
+.profit-header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+}
+
+.profit-header p {
+    font-size: 1.2rem;
+    max-width: 760px;
+    margin: 0 auto;
+    opacity: 0.95;
+    line-height: 1.6;
+}
+
+/* =========================================
+   STEP-BY-STEP FLOW DIAGRAM
+========================================= */
+
+.profit-flow-section {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 48px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.flow-diagram-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px 4px 20px;
+}
+
+.flow-step-card {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 22px 18px;
+    border: 1px solid #e2e8f0;
+    flex: 1;
+    min-width: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.flow-step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    border-color: #cbd5e1;
+    background: #ffffff;
+}
+
+.flow-step-card.highlight-revenue {
+    border-top: 4px solid #0284c7;
+}
+
+.flow-step-card.highlight-expense {
+    border-top: 4px solid #ea580c;
+}
+
+.flow-step-card.highlight-profit {
+    border-top: 4px solid #2E8B57;
+    background: #f0fdf4;
+}
+
+.flow-step-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.yield-icon { background: #e8f5ea; color: #2E8B57; }
+.price-icon { background: #fef3c7; color: #d97706; }
+.revenue-icon { background: #e0f2fe; color: #0284c7; }
+.cost-icon { background: #fff7ed; color: #ea580c; }
+.profit-icon { background: #dcfce7; color: #16a34a; }
+
+.flow-step-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.flow-step-card h4 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.flow-step-card p {
+    font-size: 0.84rem;
+    color: #64748b;
+    line-height: 1.45;
+}
+
+.flow-arrow-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   FORMULAS SECTION
+========================================= */
+
+.formulas-section {
+    margin-bottom: 48px;
+}
+
+.formulas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.formula-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-top: 4px solid #d28c50;
+    transition: transform 0.25s ease;
+}
+
+.formula-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.formula-card.card-net-profit {
+    border-top-color: #2E8B57;
+}
+
+.formula-card.card-revenue {
+    border-top-color: #0284c7;
+}
+
+.formula-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.formula-header i {
+    font-size: 1.2rem;
+    color: #d28c50;
+}
+
+.card-net-profit .formula-header i {
+    color: #2E8B57;
+}
+
+.card-revenue .formula-header i {
+    color: #0284c7;
+}
+
+.formula-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.formula-expression {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+}
+
+.formula-explanation {
+    font-size: 0.88rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* =========================================
+   DYNAMIC GRAPH & CALCULATOR SECTION
+========================================= */
+
+.profit-graph-section {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 48px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.graph-calculator-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: start;
+}
+
+.chart-container-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.chart-canvas-box {
+    position: relative;
+    height: 310px;
+    width: 100%;
+}
+
+.chart-legend-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.legend-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: #334155;
+}
+
+.chip-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+/* Simulator Box */
+.simulator-box {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid #cbd5e1;
+}
+
+.simulator-box h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.simulator-box p.sub {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-bottom: 18px;
+}
+
+.sim-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.sim-input-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.sim-input-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.sim-input-group input:focus {
+    border-color: #d28c50;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(210, 140, 80, 0.2);
+}
+
+.sim-results-strip {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.sim-res-item {
+    text-align: center;
+}
+
+.sim-res-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.sim-res-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 2px;
+}
+
+.sim-res-item.highlight .sim-res-value {
+    color: #2E8B57;
+}
+
+.bar-track {
+    height: 26px;
+    border-radius: 13px;
+    background: #e2e8f0;
+    display: flex;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.bar-segment-expense {
+    background: #ea580c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: width 0.3s ease;
+}
+
+.bar-segment-profit {
+    background: #2E8B57;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: width 0.3s ease;
+}
+
+/* =========================================
+   EXPENSES BREAKDOWN GRID
+========================================= */
+
+.expenses-section {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 48px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.expenses-section h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.expenses-lead {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 28px;
+}
+
+.expenses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.expense-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: all 0.2s ease;
+}
+
+.expense-card:hover {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.expense-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #fff7ed;
+    color: #ea580c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.expense-info h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.expense-info p {
+    font-size: 0.88rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* =========================================
+   ILLUSTRATIVE EXAMPLE SECTION
+========================================= */
+
+.example-section {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 48px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.example-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.example-section h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.example-lead {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.example-scenario-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+}
+
+.scenario-params-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.param-item {
+    background: #ffffff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.param-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.param-val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 2px;
+}
+
+.calculation-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.calc-step-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+}
+
+.calc-step-row.total-step {
+    background: #e8f5ea;
+    border-color: #bbf7d0;
+    font-weight: 700;
+}
+
+.calc-step-label {
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+.calc-step-math {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.total-step .calc-step-math {
+    color: #2E8B57;
+    font-size: 1.25rem;
+}
+
+/* Visual Breakdown Metrics */
+.breakdown-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.metric-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.metric-card.revenue {
+    border-top: 4px solid #0284c7;
+}
+
+.metric-card.expenses {
+    border-top: 4px solid #ea580c;
+}
+
+.metric-card.profit {
+    border-top: 4px solid #2E8B57;
+}
+
+.metric-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.metric-card.profit .metric-value {
+    color: #2E8B57;
+}
+
+.metric-sub {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+/* =========================================
+   FACTORS AFFECTING PROFIT SECTION
+========================================= */
+
+.risk-factors-section {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.risk-factors-section h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.risk-factors-lead {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.risk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.risk-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid #f59e0b;
+}
+
+.risk-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.risk-card h4 i {
+    color: #f59e0b;
+}
+
+.risk-card p {
+    font-size: 0.88rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .graph-calculator-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .flow-diagram-container {
+        padding-bottom: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profit-header h1 {
+        font-size: 2rem;
+    }
+
+    .formulas-grid,
+    .expenses-grid,
+    .risk-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-params-row {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-inputs-grid {
+        grid-template-columns: 1fr;
+    }
+}

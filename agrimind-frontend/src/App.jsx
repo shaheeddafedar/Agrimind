@@ -13,6 +13,8 @@ import SmartIrrigation from './pages/SmartIrrigation';
 import Analytics from './pages/Analytics';
 import Feedback from './pages/Feedback';
 import About from './pages/About';
+import CropPredictionFactors from './pages/CropPredictionFactors';
+import CropProfitCalculation from './pages/CropProfitCalculation';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 
@@ -173,6 +175,34 @@ const App = () => {
                     path="/about"
                     element={
                         <About user={user} />
+                    }
+                />
+
+                <Route
+                    path="/crop-prediction-factors"
+                    element={
+                        <CropPredictionFactors user={user} />
+                    }
+                />
+
+                <Route
+                    path="/about/crop-factors"
+                    element={
+                        <CropPredictionFactors user={user} />
+                    }
+                />
+
+                <Route
+                    path="/crop-profit-calculation"
+                    element={
+                        <CropProfitCalculation user={user} />
+                    }
+                />
+
+                <Route
+                    path="/about/crop-profit"
+                    element={
+                        <CropProfitCalculation user={user} />
                     }
                 />
 

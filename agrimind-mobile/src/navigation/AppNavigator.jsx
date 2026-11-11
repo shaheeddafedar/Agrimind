@@ -1,6 +1,10 @@
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import GeneralMoistureMonitor from '../components/GeneralMoistureMonitor';
+import { navigationRef } from './navigationRef';
 
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -14,6 +18,8 @@ import HistoryScreen from '../screens/HistoryScreen';
 import HistoryDetailScreen from '../screens/HistoryDetailScreen';
 import ChatAssistantScreen from '../screens/ChatAssistantScreen';
 import AboutScreen from '../screens/AboutScreen';
+import CropPredictionFactorsScreen from '../screens/CropPredictionFactorsScreen';
+import CropProfitCalculationScreen from '../screens/CropProfitCalculationScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import MarketPricesScreen from '../screens/MarketPricesScreen';
 
@@ -23,25 +29,27 @@ import { useAuth } from '../context/AuthContext';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-const { user, isLoading } = useAuth();
+  const { user, loading } = useAuth();
 
-const isAuthenticated = Boolean(user);
+  const isAuthenticated = Boolean(user);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
+      <GeneralMoistureMonitor />
+
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
         }}
       >
-        {isLoading ? (
+        {loading ? (
           <Stack.Screen
             name={ROUTES.SPLASH}
             component={SplashScreen}
           />
         ) : (
           <>
-            {/* Always accessible */}
             <Stack.Screen name={ROUTES.MAIN_TABS}>
               {(props) => (
                 <BottomTabNavigator
@@ -61,13 +69,21 @@ const isAuthenticated = Boolean(user);
               component={SignupScreen}
             />
 
-            {/* Public About route for existing navigation calls */}
             <Stack.Screen
               name={ROUTES.ABOUT}
               component={AboutScreen}
             />
 
-            {/* Available only when authenticated */}
+            <Stack.Screen
+              name={ROUTES.CROP_FACTORS}
+              component={CropPredictionFactorsScreen}
+            />
+
+            <Stack.Screen
+              name={ROUTES.CROP_PROFIT}
+              component={CropProfitCalculationScreen}
+            />
+
             {isAuthenticated && (
               <>
                 <Stack.Screen

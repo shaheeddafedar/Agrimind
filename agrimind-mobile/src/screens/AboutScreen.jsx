@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import useTranslation from '../i18n';
 import AgriHeader from '../components/common/AgriHeader';
 import colors from '../theme/colors';
+import { ROUTES } from '../navigation/routes';
 
 export const AboutScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -162,6 +163,88 @@ export const AboutScreen = ({ navigation }) => {
               </View>
             </View>
           </View>
+        </View>
+
+        {/* Interactive Feature Cards: Crop Prediction Factors & Crop Profit Calculation */}
+        <View style={styles.interactiveCardsContainer}>
+          <View style={styles.interactiveHeaderRow}>
+            <View style={styles.interactiveBadge}>
+              <FontAwesome5 name="graduation-cap" size={12} color={colors.primary} style={{ marginRight: 6 }} />
+              <Text style={styles.interactiveBadgeText}>{t('explore_intelligence', 'Interactive Farm Intelligence')}</Text>
+            </View>
+            <Text style={styles.interactiveTitle}>{t('about_explore_title', 'Understand AgriMind Technology')}</Text>
+            <Text style={styles.interactiveSubtitle}>
+              {t('about_explore_subtitle', 'Dive deeper into the data science and farm economics driving our recommendations.')}
+            </Text>
+          </View>
+
+          {/* Card 1: Factors Behind Crop Prediction */}
+          <TouchableOpacity
+            style={[styles.featureActionCard, styles.factorActionCard]}
+            onPress={() => navigation.navigate(ROUTES.CROP_FACTORS)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.cardHeaderRow}>
+              <View style={[styles.cardIconCircle, { backgroundColor: '#e8f5ea' }]}>
+                <FontAwesome5 name="seedling" size={20} color={colors.primary} />
+              </View>
+              <View style={styles.cardTag}>
+                <Text style={styles.cardTagText}>{t('tag_prediction_factors', 'Core AI Factors')}</Text>
+              </View>
+            </View>
+
+            <Text style={styles.cardMainTitle}>
+              {t('factors_card_title', 'Factors Behind Crop Prediction')}
+            </Text>
+
+            <Text style={styles.cardMainDesc}>
+              {t(
+                'factors_card_desc',
+                "Understand how soil properties, nutrients, environmental conditions, and agricultural information influence AgriMind's crop recommendations."
+              )}
+            </Text>
+
+            <View style={styles.cardActionFooter}>
+              <Text style={[styles.cardActionText, { color: colors.primary }]}>
+                {t('explore_factors_btn', 'Explore Crop Prediction Factors')}
+              </Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.primary} />
+            </View>
+          </TouchableOpacity>
+
+          {/* Card 2: Crop Profit Calculation */}
+          <TouchableOpacity
+            style={[styles.featureActionCard, styles.profitActionCard]}
+            onPress={() => navigation.navigate(ROUTES.CROP_PROFIT)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.cardHeaderRow}>
+              <View style={[styles.cardIconCircle, { backgroundColor: '#fff3e0' }]}>
+                <FontAwesome5 name="calculator" size={20} color={colors.secondaryDark || '#d28c50'} />
+              </View>
+              <View style={styles.cardTag}>
+                <Text style={styles.cardTagText}>{t('tag_profit_calc', 'Farm Economics')}</Text>
+              </View>
+            </View>
+
+            <Text style={styles.cardMainTitle}>
+              {t('profit_card_title', 'Crop Profit Calculation')}
+            </Text>
+
+            <Text style={styles.cardMainDesc}>
+              {t(
+                'profit_card_desc',
+                'Understand how AgriMind estimates crop revenue, cultivation expenses, and potential profit.'
+              )}
+            </Text>
+
+            <View style={styles.cardActionFooter}>
+              <Text style={[styles.cardActionText, { color: colors.secondaryDark || '#d28c50' }]}>
+                {t('explore_profit_btn', 'Learn How Profit Is Calculated')}
+              </Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.secondaryDark || '#d28c50'} />
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* Section 4: Our Vision */}
@@ -346,6 +429,112 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
     fontStyle: 'italic',
+  },
+  interactiveCardsContainer: {
+    marginBottom: 20,
+  },
+  interactiveHeaderRow: {
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 8,
+  },
+  interactiveBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#e8f5ea',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(46, 139, 87, 0.25)',
+    marginBottom: 8,
+  },
+  interactiveBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: colors.primary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  interactiveTitle: {
+    fontSize: 19,
+    fontWeight: '800',
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  interactiveSubtitle: {
+    fontSize: 12,
+    color: '#666666',
+    textAlign: 'center',
+    lineHeight: 17,
+  },
+  featureActionCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    padding: 18,
+    marginBottom: 16,
+    borderLeftWidth: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  factorActionCard: {
+    borderLeftColor: colors.primary,
+  },
+  profitActionCard: {
+    borderLeftColor: colors.secondaryDark || '#d28c50',
+  },
+  cardHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  cardIconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardTag: {
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 10,
+  },
+  cardTagText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#475569',
+    textTransform: 'uppercase',
+  },
+  cardMainTitle: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: colors.textPrimary,
+    marginBottom: 6,
+  },
+  cardMainDesc: {
+    fontSize: 12.5,
+    color: '#555555',
+    lineHeight: 18,
+    marginBottom: 14,
+  },
+  cardActionFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#F0F0F0',
+    paddingTop: 12,
+  },
+  cardActionText: {
+    fontSize: 13,
+    fontWeight: '700',
   },
 });
 

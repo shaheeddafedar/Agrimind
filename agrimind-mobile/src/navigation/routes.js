@@ -21,4 +21,6 @@ export const ROUTES = {
   ABOUT: 'About',
   FEEDBACK: 'Feedback',
   MARKET_TAB: 'MarketPrices',
+  CROP_FACTORS: 'CropPredictionFactors',
+  CROP_PROFIT: 'CropProfitCalculation',
 };

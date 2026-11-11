@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../assets/css/about.css';
 
 const About = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     return (
         <main className="page-content">
@@ -137,6 +139,82 @@ const About = () => {
                                 <h4>{t('benefit_accessible_title')}</h4>
 
                                 <p>{t('benefit_accessible_desc')}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="about-interactive-section">
+                    <div className="interactive-section-header">
+                        <span className="interactive-badge">
+                            <i className="fas fa-graduation-cap"></i> {t('explore_intelligence', 'Interactive Farm Intelligence')}
+                        </span>
+                        <h2>{t('about_explore_title', 'Understand AgriMind Technology')}</h2>
+                        <p>{t('about_explore_subtitle', 'Dive deeper into the data science and farm economics driving our recommendations.')}</p>
+                    </div>
+
+                    <div className="feature-action-cards-grid">
+                        {/* Card 1: Factors Behind Crop Prediction */}
+                        <div 
+                            className="feature-action-card card-factors"
+                            onClick={() => navigate('/crop-prediction-factors')}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/crop-prediction-factors'); }}
+                        >
+                            <div className="card-top-row">
+                                <div className="card-icon-circle factor-icon">
+                                    <i className="fas fa-seedling"></i>
+                                </div>
+                                <span className="card-tag">{t('tag_prediction_factors', 'Core AI Factors')}</span>
+                            </div>
+
+                            <h3>{t('factors_card_title', 'Factors Behind Crop Prediction')}</h3>
+
+                            <p>
+                                {t(
+                                    'factors_card_desc',
+                                    "Understand how soil properties, nutrients, environmental conditions, and agricultural information influence AgriMind's crop recommendations."
+                                )}
+                            </p>
+
+                            <div className="card-footer-action">
+                                <span className="action-link-text">
+                                    {t('explore_factors_btn', 'Explore Crop Prediction Factors')}
+                                </span>
+                                <i className="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+
+                        {/* Card 2: Crop Profit Calculation */}
+                        <div 
+                            className="feature-action-card card-profit"
+                            onClick={() => navigate('/crop-profit-calculation')}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/crop-profit-calculation'); }}
+                        >
+                            <div className="card-top-row">
+                                <div className="card-icon-circle profit-icon">
+                                    <i className="fas fa-calculator"></i>
+                                </div>
+                                <span className="card-tag">{t('tag_profit_calc', 'Farm Economics')}</span>
+                            </div>
+
+                            <h3>{t('profit_card_title', 'Crop Profit Calculation')}</h3>
+
+                            <p>
+                                {t(
+                                    'profit_card_desc',
+                                    'Understand how AgriMind estimates crop revenue, cultivation expenses, and potential profit.'
+                                )}
+                            </p>
+
+                            <div className="card-footer-action">
+                                <span className="action-link-text">
+                                    {t('explore_profit_btn', 'Learn How Profit Is Calculated')}
+                                </span>
+                                <i className="fas fa-arrow-right"></i>
                             </div>
                         </div>
                     </div>
